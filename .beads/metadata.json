@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "server",
+  "dolt_database": "Lowbeer",
+  "project_id": "635e1b35-dd68-4467-b9c2-e6a91025f0a7"
+}

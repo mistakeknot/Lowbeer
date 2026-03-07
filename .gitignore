@@ -1,0 +1,8 @@
+.DS_Store
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Dolt database files (added by bd init)
+.dolt/
+*.db
