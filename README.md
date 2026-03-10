@@ -1,14 +1,28 @@
 # Lowbeer
 
-Open-source macOS process throttler. A menu bar app that monitors CPU usage and automatically stops or throttles runaway processes — the open-source alternative to App Tamer.
+Maximize your MacBook battery life while vibecoding. A native macOS menu bar app that monitors CPU usage and automatically throttles runaway processes — the open-source alternative to App Tamer, built for the AI coding era.
 
 Named after Ainsley Lowbeer from William Gibson's *The Peripheral* — the systemic governor who dampens and corrects.
 
 ## The Problem
 
-A runaway `zsh` process burns 98.5% CPU for six days. A background `node` process pegs a core while you're on battery. Chrome helper processes multiply. macOS doesn't stop them. App Tamer costs $15 and is closed-source. There's no good open-source alternative.
+You're vibecoding on your MacBook Pro. Claude Code is spinning up subprocesses, Cursor has three language servers running, Ollama is doing local inference in the background. Your fans ramp, your battery drains from 80% to 30% in an hour. macOS doesn't manage this. App Tamer costs $15 and is closed-source.
 
-Now there is.
+Now there's a free, open-source alternative.
+
+## Install
+
+**Download the DMG** from [GitHub Releases](https://github.com/mistakeknot/Lowbeer/releases), open it, drag Lowbeer to Applications.
+
+First launch: right-click the app and select Open (ad-hoc signed, no Developer ID yet).
+
+**Build from source:**
+```bash
+git clone https://github.com/mistakeknot/Lowbeer.git
+cd Lowbeer
+./scripts/package.sh --release
+# → build/Lowbeer-0.1.0.dmg
+```
 
 ## What It Does
 
@@ -21,21 +35,11 @@ Now there is.
 - **Safety list** — system processes (WindowServer, launchd, Finder, etc.) are never touched
 - **Notifications** — get alerted when Lowbeer throttles something
 
-## Quick Start
-
-```bash
-git clone https://github.com/mistakeknot/Lowbeer.git
-cd Lowbeer
-xcodebuild -project Lowbeer.xcodeproj -scheme Lowbeer -configuration Release build
-```
-
-Then open the built `.app` from DerivedData, or open `Lowbeer.xcodeproj` in Xcode and hit Run.
-
 ## Requirements
 
-- macOS 14 (Sonoma) or later
-- Xcode 15+
+- macOS 14 (Sonoma) or later on Apple Silicon
 - Must run unsandboxed (sends SIGSTOP/SIGCONT to other processes)
+- Xcode 15+ (for building from source)
 
 ## How It Works
 
@@ -67,6 +71,14 @@ Every 3 seconds, Lowbeer samples all running processes using `proc_pidinfo(PROC_
 **Per-app rules** let you set custom thresholds and actions for specific applications.
 
 **Allowlist** lets you add processes that should never be throttled, beyond the built-in safety list.
+
+## Roadmap
+
+See [`docs/lowbeer-roadmap.md`](docs/lowbeer-roadmap.md) for the full plan. Highlights:
+
+- **v1.0** — Smart defaults for AI tools (Claude Code, Cursor, Copilot, Ollama), battery savings counter, process offender leaderboard
+- **v2.0** — Apple Silicon E-core demotion via `taskpolicy` (slow processes down instead of freezing them), thermal-aware throttling
+- **v3.0** — Community AI tool profiles, real power telemetry, privileged helper
 
 ## Architecture
 
