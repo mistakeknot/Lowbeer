@@ -7,161 +7,130 @@ Open-source macOS process throttler. Menu bar app that monitors CPU usage via `p
 ## Quick Reference
 
 ```bash
-# Build
+# Build (debug)
 xcodebuild -project Lowbeer.xcodeproj -scheme Lowbeer -configuration Debug build
 
-# Run
+# Build release + DMG
+./scripts/package.sh --release
+# → build/Lowbeer-<version>.dmg
+
+# Run (after debug build)
 open ~/Library/Developer/Xcode/DerivedData/Lowbeer-*/Build/Products/Debug/Lowbeer.app
+
+# Test throttle detection (creates 100% CPU process)
+yes > /dev/null &
+# ... verify Lowbeer detects and throttles it ...
+kill %1
 
 # Regenerate xcodeproj after adding/removing Swift files
 ruby /tmp/gen_xcodeproj.rb
 ```
 
+## Architecture Overview
+
+```
+LowbeerApp (@main, MenuBarExtra .window)
+├── ProcessMonitor            — 3s poll, proc_pidinfo CPU deltas
+├── ThrottleEngine            — Rule evaluation → SIGSTOP/SIGCONT
+│   ├── RuleEvaluator         — Per-app + global threshold matching
+│   ├── ScheduleEvaluator     — Time-of-day schedule matching
+│   └── ThrottleSession       — Per-process state (full stop / duty-cycle)
+├── ForegroundObserver        — NSWorkspace activation watcher
+├── NotificationManager       — UNUserNotificationCenter
+├── LowbeerSettings           — UserDefaults + JSON file persistence
+└── UI
+    ├── PopoverView           — Process list with sparklines
+    ├── ProcessRowView        — Icon, name, CPU%, sparkline, throttle button
+    ├── SparklineView         — 60-sample Canvas line chart
+    └── Settings (3 tabs)     — General, Rules, Allowlist
+```
+
+## Directory Layout
+
+| Path | What |
+|------|------|
+| `Lowbeer/App/` | `LowbeerApp.swift` (@main, MenuBarExtra), `AppDelegate.swift` (lifecycle) |
+| `Lowbeer/Core/` | ProcessMonitor, ProcessSnapshot, ThrottleEngine, ThrottleSession, RuleEvaluator, ScheduleEvaluator, ForegroundObserver, NotificationManager |
+| `Lowbeer/Models/` | ProcessInfo, ThrottleRule, AppIdentity, ProcessHistory, LowbeerSettings |
+| `Lowbeer/Views/MenuBar/` | PopoverView, ProcessRowView, SparklineView |
+| `Lowbeer/Views/Settings/` | SettingsView, GeneralSettingsView, RulesSettingsView, AllowlistView |
+| `Lowbeer/Helpers/` | SafetyList, ProcessIcon, HelpWindowController, SettingsWindowController |
+| `agents/` | Topic guides (architecture, monitoring, throttling, safety, testing) |
+| `docs/` | Vision, PRD, roadmap, CUJs, brainstorms |
+| `scripts/` | `package.sh` — build + DMG packaging |
+| `.github/workflows/` | `release.yml` — automated release on version tags |
+
 ## Topic Guides
 
 | Guide | What's in it |
 |-------|-------------|
-| [Architecture](agents/architecture.md) | Component diagram, directory tree, file responsibilities |
-| [Monitoring](agents/monitoring.md) | How CPU sampling works, libproc API, delta calculation, gotchas |
+| [Architecture](agents/architecture.md) | Component diagram, directory tree, file responsibilities, persistence |
+| [Monitoring](agents/monitoring.md) | CPU sampling via libproc, delta calculation, poll cycle, gotchas |
 | [Throttling](agents/throttling.md) | SIGSTOP/SIGCONT mechanics, duty-cycle, rule evaluation, auto-resume |
-| [Safety](agents/safety.md) | Protected processes, PID verification, quit cleanup |
+| [Safety](agents/safety.md) | Protected processes, PID verification, quit cleanup, failure modes |
 | [Testing](agents/testing.md) | Manual test procedures for throttling, foreground resume, persistence |
 
-## Landing the Plane (Session Completion)
+## Build & Release
 
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
+**Local packaging:**
+```bash
+./scripts/package.sh --release    # → build/Lowbeer-<version>.dmg
+./scripts/package.sh --debug      # → debug build DMG
+```
 
-**MANDATORY WORKFLOW:**
+**Automated releases** (GitHub Actions):
+1. Bump `MARKETING_VERSION` in `Lowbeer.xcodeproj/project.pbxproj`
+2. Commit and tag: `git tag v0.2.0 && git push --tags`
+3. CI builds on `macos-14` runner, creates DMG, publishes GitHub Release
 
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
-   ```bash
-   git pull --rebase
-   bd sync
-   git push
-   git status  # MUST show "up to date with origin"
-   ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
+**Current signing:** Ad-hoc (no Developer ID). Users must right-click → Open on first launch.
 
-**CRITICAL RULES:**
-- Work is NOT complete until `git push` succeeds
-- NEVER stop before pushing - that leaves work stranded locally
-- NEVER say "ready to push when you are" - YOU must push
-- If push fails, resolve and retry until it succeeds
+## Key Design Decisions (Do Not Re-Ask)
+
+- **SIGSTOP/SIGCONT, not Mach task_suspend** — no entitlements needed
+- **No privileged helper in v1** — same-user processes cover 95% of cases
+- **CPU % as energy proxy** — no public API for real energy impact
+- **ProcessInfo name collision** — use `Foundation.ProcessInfo` for system ProcessInfo
+- **libproc constants** — `PROC_PIDPATHINFO_MAXSIZE` hardcoded as 4096 (not bridged to Swift)
+- **Trunk-based development** — commit directly to `main`
+- **Unsandboxed** — required for SIGSTOP/SIGCONT; distributed outside App Store
+
+## Persistence
+
+- **UserDefaults** — global settings (threshold, interval, action, launch at login, notifications)
+- **JSON files** in `~/Library/Application Support/Lowbeer/`:
+  - `lowbeer_rules.json` — per-app rules
+  - `lowbeer_allowlist.json` — user allowlist
+- Settings auto-save on property change via `didSet`
 
 <!-- BEGIN BEADS INTEGRATION -->
 ## Issue Tracking with bd (beads)
 
-**IMPORTANT**: This project uses **bd (beads)** for ALL issue tracking. Do NOT use markdown TODOs, task lists, or other tracking methods.
-
-### Why bd?
-
-- Dependency-aware: Track blockers and relationships between issues
-- Git-friendly: Dolt-powered version control with native sync
-- Agent-optimized: JSON output, ready work detection, discovered-from links
-- Prevents duplicate tracking systems and confusion
-
-### Quick Start
-
-**Check for ready work:**
+This project uses **bd (beads)** for ALL issue tracking. Do NOT use markdown TODOs or other tracking methods.
 
 ```bash
-bd ready --json
+bd ready              # Show unblocked work
+bd list               # All issues with dependency tree
+bd show <id>          # Issue details
+bd create --title="Summary" --description="Context" --type=task --priority=2
+bd update <id> --status=in_progress
+bd close <id>         # Mark complete
 ```
 
-**Create new issues:**
-
-```bash
-bd create "Issue title" --description="Detailed context" -t bug|feature|task -p 0-4 --json
-bd create "Issue title" --description="What this issue is about" -p 1 --deps discovered-from:bd-123 --json
-```
-
-**Claim and update:**
-
-```bash
-bd update <id> --claim --json
-bd update bd-42 --priority 1 --json
-```
-
-**Complete work:**
-
-```bash
-bd close bd-42 --reason "Completed" --json
-```
-
-### Issue Types
-
-- `bug` - Something broken
-- `feature` - New functionality
-- `task` - Work item (tests, docs, refactoring)
-- `epic` - Large feature with subtasks
-- `chore` - Maintenance (dependencies, tooling)
-
-### Priorities
-
-- `0` - Critical (security, data loss, broken builds)
-- `1` - High (major features, important bugs)
-- `2` - Medium (default, nice-to-have)
-- `3` - Low (polish, optimization)
-- `4` - Backlog (future ideas)
-
-### Workflow for AI Agents
-
-1. **Check ready work**: `bd ready` shows unblocked issues
-2. **Claim your task atomically**: `bd update <id> --claim`
-3. **Work on it**: Implement, test, document
-4. **Discover new work?** Create linked issue:
-   - `bd create "Found bug" --description="Details about what was found" -p 1 --deps discovered-from:<parent-id>`
-5. **Complete**: `bd close <id> --reason "Done"`
-
-### Auto-Sync
-
-bd automatically syncs via Dolt:
-
-- Each write auto-commits to Dolt history
-- Use `bd dolt push`/`bd dolt pull` for remote sync
-- No manual export/import needed!
-
-### Important Rules
-
-- ✅ Use bd for ALL task tracking
-- ✅ Always use `--json` flag for programmatic use
-- ✅ Link discovered work with `discovered-from` dependencies
-- ✅ Check `bd ready` before asking "what should I work on?"
-- ❌ Do NOT create markdown TODO lists
-- ❌ Do NOT use external issue trackers
-- ❌ Do NOT duplicate tracking systems
-
-For more details, see README.md and docs/QUICKSTART.md.
+Issue types: `bug`, `feature`, `task`, `epic`, `chore`
+Priorities: `0` (critical) → `4` (backlog)
 
 ## Landing the Plane (Session Completion)
 
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
+**When ending a work session**, complete ALL steps. Work is NOT complete until `git push` succeeds.
 
-**MANDATORY WORKFLOW:**
-
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
+1. **File issues** for remaining work (`bd create`)
+2. **Run quality gates** if code changed (build, tests)
+3. **Update issue status** — close finished, update in-progress
+4. **Push**:
    ```bash
-   git pull --rebase
-   bd sync
-   git push
+   git pull --rebase && git push
    git status  # MUST show "up to date with origin"
    ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
-
-**CRITICAL RULES:**
-- Work is NOT complete until `git push` succeeds
-- NEVER stop before pushing - that leaves work stranded locally
-- NEVER say "ready to push when you are" - YOU must push
-- If push fails, resolve and retry until it succeeds
-
+5. **Verify** — all changes committed AND pushed
 <!-- END BEADS INTEGRATION -->

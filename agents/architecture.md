@@ -56,8 +56,14 @@ Lowbeer/
     Helpers/
       SafetyList.swift          Hardcoded never-throttle processes/paths
       ProcessIcon.swift         NSRunningApplication icon lookup with caching
+      HelpWindowController.swift  Help window presentation
+      SettingsWindowController.swift  Settings window presentation
     Info.plist                  LSUIElement=YES (menu bar only, no dock icon)
     Lowbeer.entitlements        Sandbox disabled
+  scripts/
+    package.sh                  Build + DMG packaging (ad-hoc signed)
+  .github/workflows/
+    release.yml                 Automated release on version tags (v*)
 ```
 
 ## Persistence
@@ -72,11 +78,11 @@ Lowbeer/
 2. Re-run the xcodeproj generator: `ruby /tmp/gen_xcodeproj.rb`
 3. Or manually add the file reference in Xcode
 
-## Future Work (Not in v1)
+## Future Work
 
-- Privileged helper for throttling other users' processes
+- Privileged helper for throttling other users' processes (SMJobBless/XPC)
 - Real energy impact metrics (if Apple publishes a public API)
 - Homebrew cask formula for distribution
-- Sparkline performance optimization for large process counts
-- App icon and About window
-- Code signing + notarization
+- Sparkle auto-update integration
+- Developer ID code signing + notarization (currently ad-hoc signed)
+- PID start-time verification for stronger reuse safety
