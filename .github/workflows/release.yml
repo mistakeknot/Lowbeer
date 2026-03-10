@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build release
+        run: |
+          xcodebuild \
+            -project Lowbeer.xcodeproj \
+            -scheme Lowbeer \
+            -configuration Release \
+            -derivedDataPath build/DerivedData \
+            CONFIGURATION_BUILD_DIR=build/app \
+            clean build
+
+      - name: Create DMG
+        run: |
+          mkdir -p build/dmg-staging
+          cp -R build/app/Lowbeer.app build/dmg-staging/
+          ln -s /Applications build/dmg-staging/Applications
+          hdiutil create \
+            -volname Lowbeer \
+            -srcfolder build/dmg-staging \
+            -ov -format UDZO \
+            "build/Lowbeer-${{ steps.version.outputs.version }}.dmg"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "build/Lowbeer-${{ steps.version.outputs.version }}.dmg" \
+            --title "Lowbeer $GITHUB_REF_NAME" \
+            --generate-notes
