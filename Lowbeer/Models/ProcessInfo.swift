@@ -1,0 +1,33 @@
+import AppKit
+import Foundation
+
+@Observable
+final class ProcessInfo: Identifiable {
+    let pid: pid_t
+    let name: String
+    let path: String
+    let bundleIdentifier: String?
+    var icon: NSImage?
+    var cpuPercent: Double = 0
+    var history: ProcessHistory = ProcessHistory()
+    var isThrottled: Bool = false
+    var throttleTarget: Double? = nil  // nil = full stop, 0.25 = 25% CPU
+
+    var id: pid_t { pid }
+
+    init(pid: pid_t, name: String, path: String, bundleIdentifier: String? = nil, icon: NSImage? = nil) {
+        self.pid = pid
+        self.name = name
+        self.path = path
+        self.bundleIdentifier = bundleIdentifier
+        self.icon = icon
+    }
+
+    var statusText: String {
+        if !isThrottled { return "" }
+        if let target = throttleTarget {
+            return "\(Int(target * 100))% limit"
+        }
+        return "stopped"
+    }
+}

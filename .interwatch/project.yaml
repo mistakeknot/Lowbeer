@@ -1,0 +1,10 @@
+# Interwatch — Lowbeer project configuration
+
+project:
+  name: Lowbeer
+  type: application
+  languages:
+    - swift
+  frameworks:
+    - swiftui
+  roadmap_scan_dirs: []

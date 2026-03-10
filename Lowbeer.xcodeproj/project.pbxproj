@@ -1,0 +1,491 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		164CF33FDAC6327AEB79B332 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2304EA43FAE85D8DA3DB53 /* Cocoa.framework */; };
+		17FB663FCA016F73F519FC09 /* ProcessMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4343FC1EDB42C55A6249FF /* ProcessMonitor.swift */; };
+		1FEBD3ED64EACC2673C55E93 /* ThrottleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70421AA6AF76BD8161E65AF /* ThrottleSession.swift */; };
+		24F11509C31198E3E7C89239 /* ProcessHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B31A45EEE20233E826E9F0D /* ProcessHistory.swift */; };
+		2EB4D46C08C8A09B64B259E3 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141837C5396434BC199F43FD /* NotificationManager.swift */; };
+		36A2125DB9A504F891C4A03F /* ScheduleEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA6603B85F7E45983EE5C52 /* ScheduleEvaluator.swift */; };
+		3C6BDBFCDFCF9EBC354C3761 /* ProcessRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5F3ECEBC14098B651353B0 /* ProcessRowView.swift */; };
+		4A776E03F2700E1165BD2876 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE7AA9BFE6D3EBC7459E6E2 /* GeneralSettingsView.swift */; };
+		51DE969948757C010E3794D5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16786E1C37D3FDCA0AA37AED /* SettingsView.swift */; };
+		5405648CD97D672CB7F92321 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B931E83CE4B533A792BC5E72 /* PopoverView.swift */; };
+		5558DEEB07267E3EA8444F6A /* LowbeerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CBF76B0C2BBF0A7B7D9836 /* LowbeerSettings.swift */; };
+		57CE5BFFE11BA988BE1BF4A3 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7629CD72F664E6CF5AB2D74 /* SettingsWindowController.swift */; };
+		58F314D122248D3A78B77A0C /* SafetyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4B65D91AEDBBDACF6307E1 /* SafetyList.swift */; };
+		6E084862AE8DB9DEAC9A6D37 /* AllowlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100264B8FB7ACECE91C1AB0 /* AllowlistView.swift */; };
+		703630C9091D60F786049318 /* LowbeerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14D8B302BF89F919DF4C2EB /* LowbeerApp.swift */; };
+		7C756535627C3A085F3E8682 /* ProcessInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B548106AE364207ECC587 /* ProcessInfo.swift */; };
+		7D5F046880A97566F24A13FC /* ProcessIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F166A1739975FA55A59F8E1 /* ProcessIcon.swift */; };
+		9C85A11468B440825EA948C8 /* SparklineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FDAC049C6EE57917D82114 /* SparklineView.swift */; };
+		A67846EB263E674902FB4A37 /* ThrottleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061379B42B6A09A205236BEA /* ThrottleEngine.swift */; };
+		B12B87338B2C994480C5657B /* RulesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C2418669E9BC48F41A822 /* RulesSettingsView.swift */; };
+		B7432A97A9B83E4B5EBAC26E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66193AA2D57A678F38F68D07 /* AppDelegate.swift */; };
+		BD68344D32192BC840EF27E2 /* RuleEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F7668C9AFAABC41CDE24D4 /* RuleEvaluator.swift */; };
+		C4D4F74D3A201470DECE049A /* ProcessSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19A42A00CE188B2FE74E8AD /* ProcessSnapshot.swift */; };
+		C52887D6B4B1B7E0031A0867 /* ThrottleRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9B81F2E2DB2A306B3442FA /* ThrottleRule.swift */; };
+		C535B7D37A7B2E6ED56B5EFD /* ForegroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBACE791B71E0AAF48912E5E /* ForegroundObserver.swift */; };
+		E6E73E81526646E832B161DA /* HelpWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE529D86AA4ECEBA59495E67 /* HelpWindowController.swift */; };
+		FC2216F3D3A49D85EB2983E1 /* AppIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB77E9C55E6B28F321785204 /* AppIdentity.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		061379B42B6A09A205236BEA /* ThrottleEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThrottleEngine.swift; sourceTree = "<group>"; };
+		141837C5396434BC199F43FD /* NotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		16786E1C37D3FDCA0AA37AED /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		1B31A45EEE20233E826E9F0D /* ProcessHistory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessHistory.swift; sourceTree = "<group>"; };
+		3F166A1739975FA55A59F8E1 /* ProcessIcon.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessIcon.swift; sourceTree = "<group>"; };
+		436C2418669E9BC48F41A822 /* RulesSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RulesSettingsView.swift; sourceTree = "<group>"; };
+		4C4343FC1EDB42C55A6249FF /* ProcessMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessMonitor.swift; sourceTree = "<group>"; };
+		5AE7AA9BFE6D3EBC7459E6E2 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		66193AA2D57A678F38F68D07 /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		6A5F3ECEBC14098B651353B0 /* ProcessRowView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessRowView.swift; sourceTree = "<group>"; };
+		6E4B65D91AEDBBDACF6307E1 /* SafetyList.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SafetyList.swift; sourceTree = "<group>"; };
+		7D9B81F2E2DB2A306B3442FA /* ThrottleRule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThrottleRule.swift; sourceTree = "<group>"; };
+		981B548106AE364207ECC587 /* ProcessInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessInfo.swift; sourceTree = "<group>"; };
+		9B2304EA43FAE85D8DA3DB53 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		A1237733B08DD92A73FA97E2 /* Lowbeer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lowbeer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1FDAC049C6EE57917D82114 /* SparklineView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SparklineView.swift; sourceTree = "<group>"; };
+		AFA6603B85F7E45983EE5C52 /* ScheduleEvaluator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScheduleEvaluator.swift; sourceTree = "<group>"; };
+		B4CBF76B0C2BBF0A7B7D9836 /* LowbeerSettings.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LowbeerSettings.swift; sourceTree = "<group>"; };
+		B70421AA6AF76BD8161E65AF /* ThrottleSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThrottleSession.swift; sourceTree = "<group>"; };
+		B8F7668C9AFAABC41CDE24D4 /* RuleEvaluator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RuleEvaluator.swift; sourceTree = "<group>"; };
+		B931E83CE4B533A792BC5E72 /* PopoverView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
+		BBACE791B71E0AAF48912E5E /* ForegroundObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ForegroundObserver.swift; sourceTree = "<group>"; };
+		CE529D86AA4ECEBA59495E67 /* HelpWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HelpWindowController.swift; sourceTree = "<group>"; };
+		D100264B8FB7ACECE91C1AB0 /* AllowlistView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AllowlistView.swift; sourceTree = "<group>"; };
+		D14D8B302BF89F919DF4C2EB /* LowbeerApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LowbeerApp.swift; sourceTree = "<group>"; };
+		E19A42A00CE188B2FE74E8AD /* ProcessSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessSnapshot.swift; sourceTree = "<group>"; };
+		F0774396123D88B08535CF19 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F7629CD72F664E6CF5AB2D74 /* SettingsWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		FB77E9C55E6B28F321785204 /* AppIdentity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppIdentity.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		074782F6D9D0C6DD590F69D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				164CF33FDAC6327AEB79B332 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03430B1F34E30A9719F56DCF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1237733B08DD92A73FA97E2 /* Lowbeer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		153E1DEE9B39BD7B0CFA2C9B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D14D8B302BF89F919DF4C2EB /* LowbeerApp.swift */,
+				66193AA2D57A678F38F68D07 /* AppDelegate.swift */,
+			);
+			name = App;
+			path = App;
+			sourceTree = "<group>";
+		};
+		3555B793E248D6DAFBF0D3DF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				981B548106AE364207ECC587 /* ProcessInfo.swift */,
+				7D9B81F2E2DB2A306B3442FA /* ThrottleRule.swift */,
+				FB77E9C55E6B28F321785204 /* AppIdentity.swift */,
+				1B31A45EEE20233E826E9F0D /* ProcessHistory.swift */,
+				B4CBF76B0C2BBF0A7B7D9836 /* LowbeerSettings.swift */,
+			);
+			name = Models;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		549EE77D6624AAB0E57E0B36 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				9B2304EA43FAE85D8DA3DB53 /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
+		5B9A96302AB73ECE7F68C7C2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9A1625F333B14026A4068675 /* MenuBar */,
+				F76ED5AC465B56BC67E53B6B /* Settings */,
+			);
+			name = Views;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7DD9BF50FFA20EE9435D94E3 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6E4B65D91AEDBBDACF6307E1 /* SafetyList.swift */,
+				3F166A1739975FA55A59F8E1 /* ProcessIcon.swift */,
+				CE529D86AA4ECEBA59495E67 /* HelpWindowController.swift */,
+				F7629CD72F664E6CF5AB2D74 /* SettingsWindowController.swift */,
+			);
+			name = Helpers;
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		7E561815739E561BE4DD4466 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				4C4343FC1EDB42C55A6249FF /* ProcessMonitor.swift */,
+				E19A42A00CE188B2FE74E8AD /* ProcessSnapshot.swift */,
+				061379B42B6A09A205236BEA /* ThrottleEngine.swift */,
+				B70421AA6AF76BD8161E65AF /* ThrottleSession.swift */,
+				BBACE791B71E0AAF48912E5E /* ForegroundObserver.swift */,
+				B8F7668C9AFAABC41CDE24D4 /* RuleEvaluator.swift */,
+				AFA6603B85F7E45983EE5C52 /* ScheduleEvaluator.swift */,
+				141837C5396434BC199F43FD /* NotificationManager.swift */,
+			);
+			name = Core;
+			path = Core;
+			sourceTree = "<group>";
+		};
+		9A1625F333B14026A4068675 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				B931E83CE4B533A792BC5E72 /* PopoverView.swift */,
+				6A5F3ECEBC14098B651353B0 /* ProcessRowView.swift */,
+				A1FDAC049C6EE57917D82114 /* SparklineView.swift */,
+			);
+			name = MenuBar;
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
+		C030CBB92CB5063CF71A19E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				549EE77D6624AAB0E57E0B36 /* OS X */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CF6895830ADE1FB25D03B8EB /* Lowbeer */ = {
+			isa = PBXGroup;
+			children = (
+				153E1DEE9B39BD7B0CFA2C9B /* App */,
+				7E561815739E561BE4DD4466 /* Core */,
+				3555B793E248D6DAFBF0D3DF /* Models */,
+				5B9A96302AB73ECE7F68C7C2 /* Views */,
+				7DD9BF50FFA20EE9435D94E3 /* Helpers */,
+				F0774396123D88B08535CF19 /* Info.plist */,
+			);
+			name = Lowbeer;
+			path = Lowbeer;
+			sourceTree = "<group>";
+		};
+		D69DC58C6D1823BDE95EAA09 = {
+			isa = PBXGroup;
+			children = (
+				03430B1F34E30A9719F56DCF /* Products */,
+				C030CBB92CB5063CF71A19E0 /* Frameworks */,
+				CF6895830ADE1FB25D03B8EB /* Lowbeer */,
+			);
+			sourceTree = "<group>";
+		};
+		F76ED5AC465B56BC67E53B6B /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				16786E1C37D3FDCA0AA37AED /* SettingsView.swift */,
+				5AE7AA9BFE6D3EBC7459E6E2 /* GeneralSettingsView.swift */,
+				436C2418669E9BC48F41A822 /* RulesSettingsView.swift */,
+				D100264B8FB7ACECE91C1AB0 /* AllowlistView.swift */,
+			);
+			name = Settings;
+			path = Settings;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BF86BC3E8E919BE831B259DB /* Lowbeer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8441D05E895EF3705FAA03E7 /* Build configuration list for PBXNativeTarget "Lowbeer" */;
+			buildPhases = (
+				64C632BD967AD117162DC27D /* Sources */,
+				074782F6D9D0C6DD590F69D9 /* Frameworks */,
+				FF6BFCABACD065D4EBD1AC73 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Lowbeer;
+			productName = Lowbeer;
+			productReference = A1237733B08DD92A73FA97E2 /* Lowbeer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DCCE0E33212C43859AD4176A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = CBB7BC685FCB85F353DC40CB /* Build configuration list for PBXProject "Lowbeer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D69DC58C6D1823BDE95EAA09;
+			productRefGroup = 03430B1F34E30A9719F56DCF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF86BC3E8E919BE831B259DB /* Lowbeer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FF6BFCABACD065D4EBD1AC73 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		64C632BD967AD117162DC27D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				703630C9091D60F786049318 /* LowbeerApp.swift in Sources */,
+				B7432A97A9B83E4B5EBAC26E /* AppDelegate.swift in Sources */,
+				17FB663FCA016F73F519FC09 /* ProcessMonitor.swift in Sources */,
+				C4D4F74D3A201470DECE049A /* ProcessSnapshot.swift in Sources */,
+				A67846EB263E674902FB4A37 /* ThrottleEngine.swift in Sources */,
+				1FEBD3ED64EACC2673C55E93 /* ThrottleSession.swift in Sources */,
+				C535B7D37A7B2E6ED56B5EFD /* ForegroundObserver.swift in Sources */,
+				BD68344D32192BC840EF27E2 /* RuleEvaluator.swift in Sources */,
+				36A2125DB9A504F891C4A03F /* ScheduleEvaluator.swift in Sources */,
+				2EB4D46C08C8A09B64B259E3 /* NotificationManager.swift in Sources */,
+				7C756535627C3A085F3E8682 /* ProcessInfo.swift in Sources */,
+				C52887D6B4B1B7E0031A0867 /* ThrottleRule.swift in Sources */,
+				FC2216F3D3A49D85EB2983E1 /* AppIdentity.swift in Sources */,
+				24F11509C31198E3E7C89239 /* ProcessHistory.swift in Sources */,
+				5558DEEB07267E3EA8444F6A /* LowbeerSettings.swift in Sources */,
+				5405648CD97D672CB7F92321 /* PopoverView.swift in Sources */,
+				3C6BDBFCDFCF9EBC354C3761 /* ProcessRowView.swift in Sources */,
+				9C85A11468B440825EA948C8 /* SparklineView.swift in Sources */,
+				51DE969948757C010E3794D5 /* SettingsView.swift in Sources */,
+				4A776E03F2700E1165BD2876 /* GeneralSettingsView.swift in Sources */,
+				B12B87338B2C994480C5657B /* RulesSettingsView.swift in Sources */,
+				6E084862AE8DB9DEAC9A6D37 /* AllowlistView.swift in Sources */,
+				58F314D122248D3A78B77A0C /* SafetyList.swift in Sources */,
+				7D5F046880A97566F24A13FC /* ProcessIcon.swift in Sources */,
+				E6E73E81526646E832B161DA /* HelpWindowController.swift in Sources */,
+				57CE5BFFE11BA988BE1BF4A3 /* SettingsWindowController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		112104B3E32F5C9F0B8042E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		68754A21ED2254E925F2EA94 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A9F63BD550BB0402A127048C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Lowbeer/Lowbeer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Lowbeer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mistakeknot.Lowbeer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		BF5ABD17C7E2EBEE69354222 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Lowbeer/Lowbeer.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Lowbeer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mistakeknot.Lowbeer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8441D05E895EF3705FAA03E7 /* Build configuration list for PBXNativeTarget "Lowbeer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF5ABD17C7E2EBEE69354222 /* Release */,
+				A9F63BD550BB0402A127048C /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CBB7BC685FCB85F353DC40CB /* Build configuration list for PBXProject "Lowbeer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				112104B3E32F5C9F0B8042E3 /* Debug */,
+				68754A21ED2254E925F2EA94 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DCCE0E33212C43859AD4176A /* Project object */;
+}

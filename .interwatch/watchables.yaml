@@ -1,0 +1,43 @@
+# Interwatch — Lowbeer watchable documents
+# Documents tracked for drift detection
+
+watchables:
+  - path: CLAUDE.md
+    type: operations
+    description: Build commands, key paths, design decisions
+    confidence_threshold: 0.7
+
+  - path: AGENTS.md
+    type: architecture
+    description: Agent instructions index with topic guides
+    confidence_threshold: 0.7
+
+  - path: README.md
+    type: user-facing
+    description: Public README with features, install, architecture
+    confidence_threshold: 0.8
+
+  - path: PHILOSOPHY.md
+    type: principles
+    description: Design philosophy and non-goals
+    confidence_threshold: 0.6
+
+  - path: CONVENTIONS.md
+    type: standards
+    description: Code style, naming, safety rules
+    confidence_threshold: 0.7
+
+  - path: agents/architecture.md
+    type: architecture
+    description: Component diagram, directory tree, file responsibilities
+    confidence_threshold: 0.7
+
+  - path: agents/throttling.md
+    type: architecture
+    description: SIGSTOP/SIGCONT mechanics, duty-cycle, rule evaluation
+    confidence_threshold: 0.7
+
+  - path: agents/safety.md
+    type: architecture
+    description: Protected processes, PID verification, quit cleanup
+    confidence_threshold: 0.7
