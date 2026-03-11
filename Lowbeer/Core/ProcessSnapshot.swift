@@ -25,13 +25,15 @@ struct ProcessSnapshot: Sendable {
 
 /// Collects raw process snapshots using libproc.
 enum ProcessSampler {
-    /// Get process start time via sysctl. Returns nil if the process doesn't exist.
+    /// Get process start time via sysctl. Returns nil if the process doesn't exist or is a zombie.
     static func getStartTime(for pid: pid_t) -> timeval? {
         var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, pid]
         var info = kinfo_proc()
         var size = MemoryLayout<kinfo_proc>.size
         let ret = sysctl(&mib, UInt32(mib.count), &info, &size, nil, 0)
         guard ret == 0, size > 0 else { return nil }
+        // Skip zombie processes (SZOMB = 5)
+        guard info.kp_proc.p_stat != 5 else { return nil }
         return info.kp_proc.p_starttime
     }
 
