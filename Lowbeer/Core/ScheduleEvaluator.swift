@@ -2,9 +2,9 @@ import Foundation
 
 /// Evaluates whether a throttle schedule is currently active.
 enum ScheduleEvaluator {
-    static func isActive(_ schedule: ThrottleSchedule) -> Bool {
+    static func isActive(_ schedule: ThrottleSchedule, at date: Date = Date()) -> Bool {
         let calendar = Calendar.current
-        let now = Date()
+        let now = date
 
         let weekday = calendar.component(.weekday, from: now)
         let currentDay = DayOfWeek(rawValue: weekday)

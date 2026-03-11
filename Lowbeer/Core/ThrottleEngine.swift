@@ -5,8 +5,8 @@ import Foundation
 @Observable
 final class ThrottleEngine {
     private let monitor: ProcessMonitor
-    private let foreground: ForegroundObserver
-    private let settings: LowbeerSettings
+    private let foreground: ForegroundProviding
+    let settings: LowbeerSettings
 
     /// Active throttle sessions keyed by PID.
     private(set) var sessions: [pid_t: ThrottleSession] = [:]
@@ -23,7 +23,7 @@ final class ThrottleEngine {
 
     var throttledCount: Int { sessions.count }
 
-    init(monitor: ProcessMonitor, foreground: ForegroundObserver, settings: LowbeerSettings = .shared) {
+    init(monitor: ProcessMonitor, foreground: ForegroundProviding, settings: LowbeerSettings = .shared) {
         self.monitor = monitor
         self.foreground = foreground
         self.settings = settings

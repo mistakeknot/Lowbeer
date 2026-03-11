@@ -47,9 +47,26 @@ final class LowbeerSettings {
         didSet { saveAllowlist() }
     }
 
-    private let defaults = UserDefaults.standard
+    private let defaults: UserDefaults
+
+    /// Test-only initializer. Visible via @testable import.
+    init(forTesting: Bool) {
+        self.defaults = UserDefaults(suiteName: "com.lowbeer.tests.\(UUID().uuidString)")!
+        self.globalCPUThreshold = 80
+        self.sustainedSeconds = 30
+        self.defaultAction = .stop
+        self.throttleMode = .automatic
+        self.pollInterval = 3
+        self.launchAtLogin = false
+        self.showInMenuBar = true
+        self.notificationsEnabled = true
+        self.isPaused = false
+        self.rules = []
+        self.userAllowlist = []
+    }
 
     private init() {
+        self.defaults = UserDefaults.standard
         self.globalCPUThreshold = defaults.double(forKey: "globalCPUThreshold").nonZero ?? 80
         self.sustainedSeconds = defaults.integer(forKey: "sustainedSeconds").nonZero ?? 30
         self.pollInterval = defaults.double(forKey: "pollInterval").nonZero ?? 3

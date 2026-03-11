@@ -20,7 +20,7 @@ enum SafetyList {
     ]
 
     /// Returns true if the process should never be throttled.
-    static func isProtected(name: String, path: String, pid: pid_t) -> Bool {
+    static func isProtected(name: String, path: String, pid: pid_t, allowlist: [AppIdentity]? = nil) -> Bool {
         // Our own PID
         if pid == Foundation.ProcessInfo.processInfo.processIdentifier { return true }
 
@@ -36,7 +36,7 @@ enum SafetyList {
         }
 
         // User-configured allowlist
-        let userAllowlist = LowbeerSettings.shared.userAllowlist
+        let userAllowlist = allowlist ?? LowbeerSettings.shared.userAllowlist
         for identity in userAllowlist {
             if identity.matches(bundleID: nil, path: path) { return true }
             if identity.displayName == name { return true }

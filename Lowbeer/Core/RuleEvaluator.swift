@@ -8,10 +8,11 @@ enum RuleEvaluator {
         process: ProcessInfo,
         consecutiveExceedCount: Int,
         settings: LowbeerSettings,
-        isForeground: Bool
+        isForeground: Bool,
+        allowlist: [AppIdentity]? = nil
     ) -> ThrottleAction? {
         // Check safety list first
-        if SafetyList.isProtected(name: process.name, path: process.path, pid: process.pid) {
+        if SafetyList.isProtected(name: process.name, path: process.path, pid: process.pid, allowlist: allowlist ?? settings.userAllowlist) {
             return nil
         }
 

@@ -8,6 +8,12 @@ final class ProcessMonitor {
     private(set) var processes: [ProcessInfo] = []
     private(set) var totalCPU: Double = 0
 
+    /// For testing: inject processes directly. Accessible via @testable import.
+    func setProcessesForTesting(_ processes: [ProcessInfo]) {
+        self.processes = processes
+        self.totalCPU = processes.reduce(0) { $0 + $1.cpuPercent }
+    }
+
     private var timer: Timer?
     private var previousSamples: [pid_t: ProcessSnapshot] = [:]
     private var processCache: [pid_t: ProcessInfo] = [:]

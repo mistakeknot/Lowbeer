@@ -1,9 +1,18 @@
 import AppKit
 import Foundation
 
+/// Protocol for foreground detection, enabling mock injection in tests.
+protocol ForegroundProviding: AnyObject {
+    var foregroundPID: pid_t { get }
+    var foregroundBundleID: String? { get }
+    var onForegroundChanged: ((pid_t, String?) -> Void)? { get set }
+    func isForeground(pid: pid_t) -> Bool
+    func isForeground(bundleID: String?) -> Bool
+}
+
 /// Watches for application activation to auto-resume throttled foreground apps.
 @Observable
-final class ForegroundObserver {
+final class ForegroundObserver: ForegroundProviding {
     private(set) var foregroundPID: pid_t = 0
     private(set) var foregroundBundleID: String?
     var onForegroundChanged: ((pid_t, String?) -> Void)?
