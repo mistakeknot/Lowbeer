@@ -1,0 +1,33 @@
+version: 1
+mode: all-sequential
+tier: deep
+max_parallel: 1
+timeout_per_task: 300
+
+stages:
+  - name: "Data layer"
+    tasks:
+      - id: task-1
+        title: "Add timeval Equatable extension and sysctl helper to ProcessSnapshot"
+        files: [Lowbeer/Core/ProcessSnapshot.swift]
+        depends: []
+      - id: task-2
+        title: "Thread startTime through ProcessInfo and monitor cache"
+        files: [Lowbeer/Models/ProcessInfo.swift, Lowbeer/Core/ProcessMonitor.swift]
+        depends: [task-1]
+  - name: "Verification layer"
+    tasks:
+      - id: task-3
+        title: "Rewrite ThrottleSession with start-time verification and safety fixes"
+        files: [Lowbeer/Core/ThrottleSession.swift]
+        depends: [task-2]
+      - id: task-4
+        title: "Update ThrottleEngine with session coherence check and startTime passing"
+        files: [Lowbeer/Core/ThrottleEngine.swift]
+        depends: [task-3]
+  - name: "Smoke test"
+    tasks:
+      - id: task-5
+        title: "Manual smoke test"
+        files: []
+        depends: [task-4]

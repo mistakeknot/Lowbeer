@@ -53,6 +53,18 @@ final class ThrottleEngine {
             }
         }
 
+        // Detect PID reuse: deactivate sessions whose startTime no longer matches
+        for process in monitor.processes {
+            if let session = sessions[process.pid],
+               session.startTime != process.startTime {
+                session.deactivate()
+                sessions.removeValue(forKey: process.pid)
+                process.isThrottled = false
+                process.throttleTarget = nil
+                exceedCounts[process.pid] = 0
+            }
+        }
+
         // Evaluate each process
         for process in monitor.processes {
             let isFg = foreground.isForeground(pid: process.pid)
@@ -119,6 +131,7 @@ final class ThrottleEngine {
             let session = ThrottleSession(
                 pid: process.pid,
                 processName: process.name,
+                startTime: process.startTime,
                 rule: matchedRule,
                 action: action
             )
@@ -175,7 +188,7 @@ final class ThrottleEngine {
         guard let process = monitor.processes.first(where: { $0.pid == pid }) else { return }
         guard !SafetyList.isProtected(name: process.name, path: process.path, pid: pid) else { return }
 
-        let session = ThrottleSession(pid: pid, processName: process.name, rule: nil, action: action)
+        let session = ThrottleSession(pid: pid, processName: process.name, startTime: process.startTime, rule: nil, action: action)
         sessions[pid] = session
         session.activate()
         process.isThrottled = true

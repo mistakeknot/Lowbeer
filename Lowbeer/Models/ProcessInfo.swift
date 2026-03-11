@@ -7,6 +7,7 @@ final class ProcessInfo: Identifiable {
     let name: String
     let path: String
     let bundleIdentifier: String?
+    let startTime: timeval
     var icon: NSImage?
     var cpuPercent: Double = 0
     var history: ProcessHistory = ProcessHistory()
@@ -15,11 +16,13 @@ final class ProcessInfo: Identifiable {
 
     var id: pid_t { pid }
 
-    init(pid: pid_t, name: String, path: String, bundleIdentifier: String? = nil, icon: NSImage? = nil) {
+    init(pid: pid_t, name: String, path: String, bundleIdentifier: String? = nil,
+         startTime: timeval = timeval(), icon: NSImage? = nil) {
         self.pid = pid
         self.name = name
         self.path = path
         self.bundleIdentifier = bundleIdentifier
+        self.startTime = startTime
         self.icon = icon
     }
 

@@ -74,7 +74,9 @@ final class ProcessMonitor {
             guard cpuPercent >= 0.1 else { continue }  // Filter idle processes
 
             let info: ProcessInfo
-            if let cached = processCache[pid], cached.name == current.name {
+            if let cached = processCache[pid],
+               cached.name == current.name,
+               cached.startTime == current.startTime {
                 info = cached
             } else {
                 let app = appsByPID[pid]
@@ -83,6 +85,7 @@ final class ProcessMonitor {
                     name: app?.localizedName ?? current.name,
                     path: current.path,
                     bundleIdentifier: app?.bundleIdentifier,
+                    startTime: current.startTime,
                     icon: app?.icon
                 )
                 processCache[pid] = info

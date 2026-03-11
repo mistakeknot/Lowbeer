@@ -1,9 +1,13 @@
 import Foundation
+import os.log
+
+private let logger = Logger(subsystem: "com.lowbeer", category: "throttle")
 
 /// Tracks the state of throttling for a single process.
 final class ThrottleSession {
     let pid: pid_t
     let processName: String
+    let startTime: timeval
     let rule: ThrottleRule?
     let action: ThrottleAction
 
@@ -11,11 +15,17 @@ final class ThrottleSession {
     private(set) var startedAt: Date = Date()
     private var dutyCycleTimer: Timer?
 
-    init(pid: pid_t, processName: String, rule: ThrottleRule?, action: ThrottleAction) {
+    init(pid: pid_t, processName: String, startTime: timeval,
+         rule: ThrottleRule?, action: ThrottleAction) {
         self.pid = pid
         self.processName = processName
+        self.startTime = startTime
         self.rule = rule
         self.action = action
+    }
+
+    deinit {
+        deactivate()
     }
 
     /// Begin throttling this process.
@@ -40,10 +50,14 @@ final class ThrottleSession {
     }
 
     private func sendStop() {
-        // Verify PID still belongs to expected process before stopping
         guard verifyProcess() else { return }
-        kill(pid, SIGSTOP)
+        let result = kill(pid, SIGSTOP)
+        guard result == 0 else { return }
         isStopped = true
+        // Post-signal re-verify: if PID was reused between verify and kill, undo immediately
+        if !verifyProcess() {
+            sendCont()
+        }
     }
 
     private func sendCont() {
@@ -55,7 +69,6 @@ final class ThrottleSession {
     private func startDutyCycle(fraction: Double) {
         let period: TimeInterval = 1.0
         let runTime = period * max(0.05, min(0.95, fraction))
-        let stopTime = period - runTime
 
         sendStop()
 
@@ -74,12 +87,18 @@ final class ThrottleSession {
         }
     }
 
-    /// Verify PID still belongs to the expected process (PIDs can be reused).
+    /// Verify PID still belongs to the expected process via start-time comparison.
+    /// Fail-closed: returns false if sysctl fails or start time differs.
     private func verifyProcess() -> Bool {
-        var nameBuffer = [CChar](repeating: 0, count: Int(MAXCOMLEN + 1))
-        proc_name(pid, &nameBuffer, UInt32(nameBuffer.count))
-        let currentName = String(cString: nameBuffer)
-        return currentName == processName || processName.hasPrefix(currentName)
+        guard let currentStartTime = ProcessSampler.getStartTime(for: pid) else {
+            logger.info("PID \(self.pid) no longer exists — deactivating throttle")
+            return false
+        }
+        guard currentStartTime == startTime else {
+            logger.warning("PID \(self.pid) reused: expected start \(self.startTime.tv_sec), got \(currentStartTime.tv_sec) — deactivating")
+            return false
+        }
+        return true
     }
 
     var elapsedDescription: String {

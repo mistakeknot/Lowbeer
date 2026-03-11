@@ -4,6 +4,12 @@ import Foundation
 // libproc constants not bridged to Swift
 private let PROC_PIDPATHINFO_SIZE: UInt32 = 4096
 
+extension timeval: @retroactive Equatable {
+    public static func == (lhs: timeval, rhs: timeval) -> Bool {
+        lhs.tv_sec == rhs.tv_sec && lhs.tv_usec == rhs.tv_usec
+    }
+}
+
 /// Raw per-process CPU time sample from proc_pidinfo.
 struct ProcessSnapshot: Sendable {
     let pid: pid_t
@@ -12,12 +18,23 @@ struct ProcessSnapshot: Sendable {
     let totalUserNs: UInt64
     let totalSystemNs: UInt64
     let timestamp: CFAbsoluteTime
+    let startTime: timeval
 
     var totalNs: UInt64 { totalUserNs + totalSystemNs }
 }
 
 /// Collects raw process snapshots using libproc.
 enum ProcessSampler {
+    /// Get process start time via sysctl. Returns nil if the process doesn't exist.
+    static func getStartTime(for pid: pid_t) -> timeval? {
+        var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, pid]
+        var info = kinfo_proc()
+        var size = MemoryLayout<kinfo_proc>.size
+        let ret = sysctl(&mib, UInt32(mib.count), &info, &size, nil, 0)
+        guard ret == 0, size > 0 else { return nil }
+        return info.kp_proc.p_starttime
+    }
+
     /// Returns snapshots for all running processes.
     static func sampleAll() -> [pid_t: ProcessSnapshot] {
         let bufferSize = proc_listallpids(nil, 0)
@@ -34,6 +51,7 @@ enum ProcessSampler {
         for i in 0..<Int(actualCount) {
             let pid = pids[i]
             guard pid > 0 else { continue }
+            guard let startTime = getStartTime(for: pid) else { continue }
 
             var taskInfo = proc_taskinfo()
             let size = Int32(MemoryLayout<proc_taskinfo>.size)
@@ -63,7 +81,8 @@ enum ProcessSampler {
                 path: path,
                 totalUserNs: taskInfo.pti_total_user,
                 totalSystemNs: taskInfo.pti_total_system,
-                timestamp: now
+                timestamp: now,
+                startTime: startTime
             )
         }
         return results

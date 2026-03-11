@@ -24,6 +24,7 @@ Ship the app every MacBook vibecoder downloads to save battery. Smart defaults f
 | Zombie process filtering (skip state=Z) | `Lowbeer-tvg` | P1 | Planned |
 | Launch-at-login verification (SMAppService) | `Lowbeer-m7c` | P1 | Planned |
 | SIGSTOP debounce for rapid PID events | `Lowbeer-wjn` | P1 | Planned |
+| File descriptor exhaustion detection and cleanup | `Lowbeer-13e` | P1 | Planned |
 
 **Exit criteria:** Vibecoding users can install via DMG, get smart defaults for their AI tools, and see "Lowbeer saved you X hours today" in the menu bar. Automated tests passing, no known safety bugs.
 
