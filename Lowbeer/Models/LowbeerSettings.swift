@@ -48,6 +48,7 @@ final class LowbeerSettings {
     }
 
     private let defaults: UserDefaults
+    private var isSavingRules = false
 
     /// Test-only initializer. Visible via @testable import.
     init(forTesting: Bool) {
@@ -84,6 +85,20 @@ final class LowbeerSettings {
         } else {
             self.defaultAction = .stop
         }
+
+        // Seed vibecoding defaults on first launch only
+        if !defaults.bool(forKey: "hasSeededDefaults") {
+            if rules.isEmpty {
+                rules = DefaultRules.all
+            }
+            defaults.set(true, forKey: "hasSeededDefaults")
+        }
+
+        // Ensure custom rules precede defaults for first-match semantics
+        rules.sort { !$0.isDefault && $1.isDefault }
+
+        // didSet observers are suppressed during init, so write explicitly
+        saveRules()
     }
 
     private func save() {
@@ -101,7 +116,13 @@ final class LowbeerSettings {
     }
 
     private func saveRules() {
+        guard !isSavingRules else { return }
+        isSavingRules = true
+        // Sort in-place so the live array matches disk order (custom before default).
+        // The guard prevents didSet recursion from the sort assignment.
+        rules.sort { !$0.isDefault && $1.isDefault }
         Self.saveJSON(rules, to: "lowbeer_rules.json")
+        isSavingRules = false
     }
 
     private func saveAllowlist() {

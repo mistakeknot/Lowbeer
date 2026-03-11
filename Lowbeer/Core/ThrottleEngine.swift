@@ -136,35 +136,35 @@ final class ThrottleEngine {
                 action: action
             )
             sessions[process.pid] = session
-            session.activate()
-
-            // Update process model
-            process.isThrottled = true
-            if case .throttleTo(let target) = action {
-                process.throttleTarget = target
-            } else if case .stop = action {
-                process.throttleTarget = nil
-            }
-
-            // Notify
-            if settings.notificationsEnabled, case .notifyOnly = action {
-                // notifyOnly doesn't throttle, just alerts
-            } else if settings.notificationsEnabled {
-                LowbeerNotificationManager.shared.notifyThrottled(
-                    processName: process.name,
-                    pid: process.pid,
-                    action: action
-                )
-            }
 
             if case .notifyOnly = action {
-                // Don't actually track as a session for notify-only
-                sessions.removeValue(forKey: process.pid)
-                LowbeerNotificationManager.shared.notifyThrottled(
-                    processName: process.name,
-                    pid: process.pid,
-                    action: action
-                )
+                // notifyOnly: keep session for dedup (prevents re-notification
+                // every poll cycle) but don't send SIGSTOP
+                if settings.notificationsEnabled {
+                    LowbeerNotificationManager.shared.notifyThrottled(
+                        processName: process.name,
+                        pid: process.pid,
+                        action: action
+                    )
+                }
+            } else {
+                session.activate()
+
+                // Update process model
+                process.isThrottled = true
+                if case .throttleTo(let target) = action {
+                    process.throttleTarget = target
+                } else if case .stop = action {
+                    process.throttleTarget = nil
+                }
+
+                if settings.notificationsEnabled {
+                    LowbeerNotificationManager.shared.notifyThrottled(
+                        processName: process.name,
+                        pid: process.pid,
+                        action: action
+                    )
+                }
             }
         }
     }

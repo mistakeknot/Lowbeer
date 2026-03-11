@@ -10,6 +10,7 @@
 		04E155B50F593F4BFF63AE70 /* SafetyListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF24A1D60C2F342903F1F2F0 /* SafetyListTests.swift */; };
 		164CF33FDAC6327AEB79B332 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2304EA43FAE85D8DA3DB53 /* Cocoa.framework */; };
 		17FB663FCA016F73F519FC09 /* ProcessMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4343FC1EDB42C55A6249FF /* ProcessMonitor.swift */; };
+		19D40AEAA506D396662D5DA1 /* DefaultRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D91A23E544D76B10526EA6 /* DefaultRules.swift */; };
 		1FEBD3ED64EACC2673C55E93 /* ThrottleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70421AA6AF76BD8161E65AF /* ThrottleSession.swift */; };
 		24F11509C31198E3E7C89239 /* ProcessHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B31A45EEE20233E826E9F0D /* ProcessHistory.swift */; };
 		272538E1AEE6303776273F5A /* ThrottleEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E49B50D886C8078E2C8713A /* ThrottleEngineTests.swift */; };
@@ -27,6 +28,7 @@
 		57CE5BFFE11BA988BE1BF4A3 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7629CD72F664E6CF5AB2D74 /* SettingsWindowController.swift */; };
 		58F314D122248D3A78B77A0C /* SafetyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4B65D91AEDBBDACF6307E1 /* SafetyList.swift */; };
 		6E084862AE8DB9DEAC9A6D37 /* AllowlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100264B8FB7ACECE91C1AB0 /* AllowlistView.swift */; };
+		6FEE7A1EEA85C0FA22A1B964 /* DefaultRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E5C4469733769264ED811A /* DefaultRulesTests.swift */; };
 		703630C9091D60F786049318 /* LowbeerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14D8B302BF89F919DF4C2EB /* LowbeerApp.swift */; };
 		7C756535627C3A085F3E8682 /* ProcessInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B548106AE364207ECC587 /* ProcessInfo.swift */; };
 		7D5F046880A97566F24A13FC /* ProcessIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F166A1739975FA55A59F8E1 /* ProcessIcon.swift */; };
@@ -63,8 +65,10 @@
 		1B31A45EEE20233E826E9F0D /* ProcessHistory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessHistory.swift; sourceTree = "<group>"; };
 		3F166A1739975FA55A59F8E1 /* ProcessIcon.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessIcon.swift; sourceTree = "<group>"; };
 		436C2418669E9BC48F41A822 /* RulesSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RulesSettingsView.swift; sourceTree = "<group>"; };
+		43D91A23E544D76B10526EA6 /* DefaultRules.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DefaultRules.swift; sourceTree = "<group>"; };
 		496E7165ABD85A192681F4FC /* LowbeerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LowbeerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4343FC1EDB42C55A6249FF /* ProcessMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessMonitor.swift; sourceTree = "<group>"; };
+		52E5C4469733769264ED811A /* DefaultRulesTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DefaultRulesTests.swift; sourceTree = "<group>"; };
 		5AE7AA9BFE6D3EBC7459E6E2 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		66193AA2D57A678F38F68D07 /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A5F3ECEBC14098B651353B0 /* ProcessRowView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessRowView.swift; sourceTree = "<group>"; };
@@ -163,6 +167,7 @@
 				FB77E9C55E6B28F321785204 /* AppIdentity.swift */,
 				1B31A45EEE20233E826E9F0D /* ProcessHistory.swift */,
 				B4CBF76B0C2BBF0A7B7D9836 /* LowbeerSettings.swift */,
+				43D91A23E544D76B10526EA6 /* DefaultRules.swift */,
 			);
 			name = Models;
 			path = Models;
@@ -221,6 +226,7 @@
 				FFB2109A2C82B59CBF5F7B19 /* AppIdentityTests.swift */,
 				DDDEF6162665DE22588DD5C3 /* ThrottleRuleCodableTests.swift */,
 				7A0E53B805240C7772C30B87 /* ScheduleEvaluatorTests.swift */,
+				52E5C4469733769264ED811A /* DefaultRulesTests.swift */,
 			);
 			name = Models;
 			path = Models;
@@ -406,6 +412,7 @@
 				7D5F046880A97566F24A13FC /* ProcessIcon.swift in Sources */,
 				E6E73E81526646E832B161DA /* HelpWindowController.swift in Sources */,
 				57CE5BFFE11BA988BE1BF4A3 /* SettingsWindowController.swift in Sources */,
+				19D40AEAA506D396662D5DA1 /* DefaultRules.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +428,7 @@
 				4A0F1758E622A737826ECE8D /* RuleEvaluatorTests.swift in Sources */,
 				272538E1AEE6303776273F5A /* ThrottleEngineTests.swift in Sources */,
 				A0040C51AC06798AED584C0B /* MockForegroundObserver.swift in Sources */,
+				6FEE7A1EEA85C0FA22A1B964 /* DefaultRulesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

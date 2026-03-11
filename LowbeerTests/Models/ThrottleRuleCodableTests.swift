@@ -94,5 +94,51 @@ final class ThrottleRuleCodableTests: XCTestCase {
         XCTAssertEqual(decoded.schedule, rule.schedule)
         XCTAssertEqual(decoded.throttleInBackground, rule.throttleInBackground)
         XCTAssertEqual(decoded.enabled, rule.enabled)
+        XCTAssertEqual(decoded.isDefault, rule.isDefault)
+    }
+
+    // MARK: - isDefault field
+
+    func testIsDefaultRoundTrip() throws {
+        let rule = ThrottleRule(
+            identity: AppIdentity(bundleIdentifier: "com.test.app", displayName: "Test"),
+            isDefault: true
+        )
+        let data = try JSONEncoder().encode(rule)
+        let decoded = try JSONDecoder().decode(ThrottleRule.self, from: data)
+        XCTAssertTrue(decoded.isDefault)
+    }
+
+    func testIsDefaultFalseByDefault() throws {
+        let rule = ThrottleRule(
+            identity: AppIdentity(bundleIdentifier: "com.test.app", displayName: "Test")
+        )
+        let data = try JSONEncoder().encode(rule)
+        let decoded = try JSONDecoder().decode(ThrottleRule.self, from: data)
+        XCTAssertFalse(decoded.isDefault)
+    }
+
+    func testMigrationFromJSONWithoutIsDefault() throws {
+        // Simulates loading rules saved by a pre-isDefault version.
+        // The key "isDefault" is absent — decoder must not crash.
+        let json = """
+        {
+            "id": "12345678-1234-1234-1234-123456789012",
+            "identity": {
+                "bundleIdentifier": "com.test.app",
+                "displayName": "Test"
+            },
+            "cpuThreshold": 80,
+            "sustainedSeconds": 30,
+            "action": { "stop": {} },
+            "throttleInBackground": true,
+            "enabled": true
+        }
+        """
+        let data = json.data(using: .utf8)!
+        let decoded = try JSONDecoder().decode(ThrottleRule.self, from: data)
+        XCTAssertFalse(decoded.isDefault, "Missing isDefault key should decode as false")
+        XCTAssertEqual(decoded.cpuThreshold, 80)
+        XCTAssertTrue(decoded.enabled)
     }
 }

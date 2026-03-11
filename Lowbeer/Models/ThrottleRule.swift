@@ -50,6 +50,7 @@ struct ThrottleRule: Codable, Identifiable, Hashable, Sendable {
     var schedule: ThrottleSchedule?    // optional time-based activation
     var throttleInBackground: Bool     // only throttle when not foreground
     var enabled: Bool
+    var isDefault: Bool                // true for built-in vibecoding defaults
 
     init(
         identity: AppIdentity,
@@ -58,7 +59,8 @@ struct ThrottleRule: Codable, Identifiable, Hashable, Sendable {
         action: ThrottleAction = .stop,
         schedule: ThrottleSchedule? = nil,
         throttleInBackground: Bool = true,
-        enabled: Bool = true
+        enabled: Bool = true,
+        isDefault: Bool = false
     ) {
         self.id = UUID()
         self.identity = identity
@@ -68,5 +70,26 @@ struct ThrottleRule: Codable, Identifiable, Hashable, Sendable {
         self.schedule = schedule
         self.throttleInBackground = throttleInBackground
         self.enabled = enabled
+        self.isDefault = isDefault
+    }
+
+    // Custom decoder: decodeIfPresent for isDefault so existing JSON without
+    // the key decodes safely as false instead of crashing.
+    enum CodingKeys: String, CodingKey {
+        case id, identity, cpuThreshold, sustainedSeconds, action
+        case schedule, throttleInBackground, enabled, isDefault
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(UUID.self, forKey: .id)
+        identity = try c.decode(AppIdentity.self, forKey: .identity)
+        cpuThreshold = try c.decode(Double.self, forKey: .cpuThreshold)
+        sustainedSeconds = try c.decode(Int.self, forKey: .sustainedSeconds)
+        action = try c.decode(ThrottleAction.self, forKey: .action)
+        schedule = try c.decodeIfPresent(ThrottleSchedule.self, forKey: .schedule)
+        throttleInBackground = try c.decode(Bool.self, forKey: .throttleInBackground)
+        enabled = try c.decode(Bool.self, forKey: .enabled)
+        isDefault = try c.decodeIfPresent(Bool.self, forKey: .isDefault) ?? false
     }
 }

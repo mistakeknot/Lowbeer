@@ -216,7 +216,7 @@ final class ThrottleEngineTests: XCTestCase {
 
     // MARK: - Notify Only
 
-    func testNotifyOnlyNoSession() {
+    func testNotifyOnlyKeepsSessionForDedup() {
         settings.globalCPUThreshold = 50
         settings.sustainedSeconds = 9
         settings.defaultAction = .notifyOnly
@@ -226,7 +226,26 @@ final class ThrottleEngineTests: XCTestCase {
 
         for _ in 0..<4 { engine.evaluate() }
 
-        // notifyOnly creates session then immediately removes it
+        // notifyOnly keeps a session to prevent re-notification every poll cycle.
+        // The session exists but the process is NOT marked as throttled (no SIGSTOP sent).
+        XCTAssertEqual(engine.throttledCount, 1)
+        XCTAssertFalse(process.isThrottled)
+    }
+
+    func testNotifyOnlyClearsWhenCPUDrops() {
+        settings.globalCPUThreshold = 50
+        settings.sustainedSeconds = 9
+        settings.defaultAction = .notifyOnly
+
+        let process = makeProcess(bundleID: "com.unmatched.app", cpuPercent: 100)
+        setProcesses([process])
+
+        for _ in 0..<4 { engine.evaluate() }
+        XCTAssertEqual(engine.throttledCount, 1)
+
+        // CPU drops below threshold — session should be cleaned up
+        process.cpuPercent = 10
+        engine.evaluate()
         XCTAssertEqual(engine.throttledCount, 0)
     }
 }
