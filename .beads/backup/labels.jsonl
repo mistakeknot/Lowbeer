@@ -21,6 +21,9 @@
 {"issue_id":"Demarch-4xp","label":"claimed_at:1773268579"}
 {"issue_id":"Demarch-4xp","label":"claimed_by:3b54e7fd-1d67-47bc-8d07-f2e5813a1c95"}
 {"issue_id":"Demarch-4xp","label":"complexity:4"}
+{"issue_id":"Demarch-6qb","label":"claimed_at:1773302500"}
+{"issue_id":"Demarch-6qb","label":"claimed_by:b814f5a5-e0d3-4545-b81c-9657cff41167"}
+{"issue_id":"Demarch-6qb","label":"complexity:4"}
 {"issue_id":"Demarch-6qb.8","label":"claimed_at:1773296798"}
 {"issue_id":"Demarch-6qb.8","label":"claimed_by:41035d92-362f-4550-be03-477de1ced2e9"}
 {"issue_id":"Demarch-6qb.8","label":"complexity:4"}
@@ -108,7 +111,7 @@
 {"issue_id":"Demarch-xe0","label":"claimed_at:1773255642"}
 {"issue_id":"Demarch-xe0","label":"claimed_by:8b79fb22-400e-49b4-94f4-da990fc10462"}
 {"issue_id":"Demarch-xe0","label":"complexity:3"}
-{"issue_id":"Demarch-yhl","label":"claimed_at:1773301803"}
+{"issue_id":"Demarch-yhl","label":"claimed_at:1773302358"}
 {"issue_id":"Demarch-yhl","label":"claimed_by:b814f5a5-e0d3-4545-b81c-9657cff41167"}
 {"issue_id":"Demarch-yhl","label":"complexity:2"}
 {"issue_id":"Demarch-yle","label":"claimed_at:1773296191"}
