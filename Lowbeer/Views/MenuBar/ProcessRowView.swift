@@ -2,6 +2,8 @@ import SwiftUI
 
 struct ProcessRowView: View {
     let process: ProcessInfo
+    let systemWatts: Double
+    let totalCPU: Double
     let onThrottle: () -> Void
     let onResume: () -> Void
 
@@ -30,10 +32,19 @@ struct ProcessRowView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             // CPU %
-            Text(String(format: "%.0f%%", process.cpuPercent))
+            Text(String(format: "%.1f%%", process.cpuPercent))
                 .font(.system(.body, design: .monospaced))
                 .foregroundStyle(cpuColor)
-                .frame(width: 44, alignment: .trailing)
+                .frame(width: 50, alignment: .trailing)
+
+            // Energy share (% of system power)
+            if systemWatts >= 3.0, totalCPU > 0 {
+                let share = (process.cpuPercent / totalCPU) * 100.0
+                Text(String(format: "%.0f%%⚡", share))
+                    .font(.system(.caption2, design: .monospaced))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 40, alignment: .trailing)
+            }
 
             // Sparkline
             SparklineView(

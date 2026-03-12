@@ -21,6 +21,8 @@ struct PopoverView: View {
                     ForEach(displayedProcesses) { process in
                         ProcessRowView(
                             process: process,
+                            systemWatts: monitor.latestPower.totalWatts,
+                            totalCPU: monitor.totalCPU,
                             onThrottle: { engine.throttle(pid: process.pid) },
                             onResume: { engine.resume(pid: process.pid) }
                         )
@@ -86,6 +88,15 @@ struct PopoverView: View {
             }
             .buttonStyle(.borderless)
             .help("Settings")
+
+            // Quit
+            Button {
+                NSApplication.shared.terminate(nil)
+            } label: {
+                Image(systemName: "xmark.circle")
+            }
+            .buttonStyle(.borderless)
+            .help("Quit Lowbeer")
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
