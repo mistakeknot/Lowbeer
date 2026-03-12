@@ -15,6 +15,9 @@ struct PowerSample {
 
     var totalWatts: Double { cpuWatts + gpuWatts + aneWatts + dramWatts }
 
+    /// Minimum watts to show energy data in the UI (below this, system is idle).
+    static let displayThreshold: Double = 3.0
+
     static let zero = PowerSample(
         timestamp: 0, cpuWatts: 0, gpuWatts: 0, aneWatts: 0,
         dramWatts: 0, packageWatts: 0, pCoreWatts: 0, eCoreWatts: 0
@@ -40,8 +43,6 @@ final class PowerSampler {
     // dlsym function types
     private typealias CopyChannelsInGroupFn = @convention(c)
         (CFString?, CFString?, UInt64, UInt64, UInt64) -> Unmanaged<CFDictionary>?
-    private typealias MergeChannelsFn = @convention(c)
-        (CFMutableDictionary, CFDictionary, CFTypeRef?) -> Void
     private typealias CreateSubscriptionFn = @convention(c)
         (UnsafeMutableRawPointer?, CFMutableDictionary,
          UnsafeMutablePointer<Unmanaged<CFMutableDictionary>?>?,
@@ -56,7 +57,6 @@ final class PowerSampler {
         (CFDictionary, Int32) -> Int64
 
     private var fnCopyChannelsInGroup: CopyChannelsInGroupFn?
-    private var fnMergeChannels: MergeChannelsFn?
     private var fnCreateSubscription: CreateSubscriptionFn?
     private var fnCreateSamples: CreateSamplesFn?
     private var fnCreateSamplesDelta: CreateSamplesDeltaFn?
@@ -102,7 +102,6 @@ final class PowerSampler {
         }
 
         fnCopyChannelsInGroup = load("IOReportCopyChannelsInGroup")
-        fnMergeChannels = load("IOReportMergeChannels")
         fnCreateSubscription = load("IOReportCreateSubscription")
         fnCreateSamples = load("IOReportCreateSamples")
         fnCreateSamplesDelta = load("IOReportCreateSamplesDelta")
@@ -211,20 +210,19 @@ final class PowerSampler {
             let rawValue = self.fnSimpleGetIntegerValue!(channelSample, 0)
             let joules = self.energyToJoules(rawValue, channel: channelSample)
 
-            // Categorize by channel name
+            // Categorize by channel name (case-insensitive to handle all chip variants)
             // Base chips: ECPU, PCPU, GPU, ANE, DRAM
             // Pro/Max: EACC_CPU, PACC0_CPU, PACC1_CPU, GPU0, ANE0, DRAM0
             // Ultra: DIE_0_EACC_CPU, etc.
-            let upperName = name.uppercased()
-            if upperName.contains("ECPU") || upperName.contains("EACC") {
+            if name.localizedCaseInsensitiveContains("ECPU") || name.localizedCaseInsensitiveContains("EACC") {
                 eCoreEnergy += joules
-            } else if upperName.contains("PCPU") || upperName.contains("PACC") {
+            } else if name.localizedCaseInsensitiveContains("PCPU") || name.localizedCaseInsensitiveContains("PACC") {
                 pCoreEnergy += joules
-            } else if upperName.contains("GPU") {
+            } else if name.localizedCaseInsensitiveContains("GPU") {
                 gpuEnergy += joules
-            } else if upperName.contains("ANE") {
+            } else if name.localizedCaseInsensitiveContains("ANE") {
                 aneEnergy += joules
-            } else if upperName.contains("DRAM") {
+            } else if name.localizedCaseInsensitiveContains("DRAM") {
                 dramEnergy += joules
             }
 

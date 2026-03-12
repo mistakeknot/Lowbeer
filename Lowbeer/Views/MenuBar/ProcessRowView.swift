@@ -38,7 +38,7 @@ struct ProcessRowView: View {
                 .frame(width: 50, alignment: .trailing)
 
             // Energy share (% of system power)
-            if systemWatts >= 3.0, totalCPU > 0 {
+            if systemWatts >= PowerSample.displayThreshold, totalCPU > 0 {
                 let share = (process.cpuPercent / totalCPU) * 100.0
                 Text(String(format: "%.0f%%⚡", share))
                     .font(.system(.caption2, design: .monospaced))

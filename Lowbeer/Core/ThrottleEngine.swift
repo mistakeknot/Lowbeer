@@ -39,6 +39,33 @@ final class ThrottleEngine {
         }
     }
 
+    // MARK: - Session Lifecycle
+
+    /// Deactivate a throttle session and clean up all associated state.
+    private func releaseSession(pid: pid_t, resetExceedCount: Bool = true) {
+        guard let session = sessions[pid] else { return }
+        session.deactivate()
+        sessions.removeValue(forKey: pid)
+        if resetExceedCount {
+            exceedCounts[pid] = 0
+        }
+        if let process = monitor.processes.first(where: { $0.pid == pid }) {
+            process.isThrottled = false
+            process.throttleTarget = nil
+        }
+    }
+
+    // MARK: - Rule Matching
+
+    /// Find the first matching enabled rule for a process, or nil for global threshold.
+    private func matchingRule(for process: ProcessInfo) -> ThrottleRule? {
+        settings.rules.first { rule in
+            rule.enabled && rule.identity.matches(bundleID: process.bundleIdentifier, path: process.path)
+        }
+    }
+
+    // MARK: - Evaluation
+
     /// Called each poll cycle to evaluate all processes.
     func evaluate() {
         guard !settings.isPaused else { return }
@@ -46,22 +73,16 @@ final class ThrottleEngine {
         let activePIDs = Set(monitor.processes.map(\.pid))
 
         // Clean up sessions for processes that no longer exist
-        for (pid, session) in sessions {
-            if !activePIDs.contains(pid) {
-                session.deactivate()
-                sessions.removeValue(forKey: pid)
-            }
+        for (pid, session) in sessions where !activePIDs.contains(pid) {
+            session.deactivate()
+            sessions.removeValue(forKey: pid)
         }
 
         // Detect PID reuse: deactivate sessions whose startTime no longer matches
         for process in monitor.processes {
             if let session = sessions[process.pid],
                session.startTime != process.startTime {
-                session.deactivate()
-                sessions.removeValue(forKey: process.pid)
-                process.isThrottled = false
-                process.throttleTarget = nil
-                exceedCounts[process.pid] = 0
+                releaseSession(pid: process.pid)
             }
         }
 
@@ -71,17 +92,16 @@ final class ThrottleEngine {
                 || foreground.isForeground(bundleID: process.bundleIdentifier)
 
             // If foreground and currently throttled, auto-resume
-            if isFg, let session = sessions[process.pid] {
-                session.deactivate()
-                sessions.removeValue(forKey: process.pid)
-                process.isThrottled = false
-                process.throttleTarget = nil
-                exceedCounts[process.pid] = 0
+            if isFg, sessions[process.pid] != nil {
+                releaseSession(pid: process.pid)
                 continue
             }
 
+            // Find matching rule once (used for threshold, action, and session)
+            let matchedRule = matchingRule(for: process)
+            let threshold = matchedRule?.cpuThreshold ?? settings.globalCPUThreshold
+
             // Track how long this process has exceeded threshold
-            let threshold = matchingThreshold(for: process)
             if process.cpuPercent > threshold {
                 exceedCounts[process.pid, default: 0] += 1
             } else {
@@ -89,11 +109,8 @@ final class ThrottleEngine {
                 promptedPIDs.remove(process.pid)
 
                 // If process dropped below threshold and is throttled, release it
-                if let session = sessions[process.pid] {
-                    session.deactivate()
-                    sessions.removeValue(forKey: process.pid)
-                    process.isThrottled = false
-                    process.throttleTarget = nil
+                if sessions[process.pid] != nil {
+                    releaseSession(pid: process.pid, resetExceedCount: false)
                 }
             }
 
@@ -120,11 +137,6 @@ final class ThrottleEngine {
                     )
                 }
                 continue
-            }
-
-            // Find matching rule for the session
-            let matchedRule = settings.rules.first { rule in
-                rule.enabled && rule.identity.matches(bundleID: process.bundleIdentifier, path: process.path)
             }
 
             // Apply throttle
@@ -171,15 +183,7 @@ final class ThrottleEngine {
 
     /// Manually resume a specific process.
     func resume(pid: pid_t) {
-        guard let session = sessions[pid] else { return }
-        session.deactivate()
-        sessions.removeValue(forKey: pid)
-        exceedCounts[pid] = 0
-
-        if let process = monitor.processes.first(where: { $0.pid == pid }) {
-            process.isThrottled = false
-            process.throttleTarget = nil
-        }
+        releaseSession(pid: pid)
     }
 
     /// Manually throttle a specific process.
@@ -199,12 +203,12 @@ final class ThrottleEngine {
 
     /// Resume all throttled processes.
     func resumeAll() {
-        for (pid, session) in sessions {
+        for (_, session) in sessions {
             session.deactivate()
-            if let process = monitor.processes.first(where: { $0.pid == pid }) {
-                process.isThrottled = false
-                process.throttleTarget = nil
-            }
+        }
+        for process in monitor.processes where process.isThrottled {
+            process.isThrottled = false
+            process.throttleTarget = nil
         }
         sessions.removeAll()
         exceedCounts.removeAll()
@@ -212,24 +216,6 @@ final class ThrottleEngine {
     }
 
     private func handleForegroundChange(pid: pid_t) {
-        if let session = sessions[pid] {
-            session.deactivate()
-            sessions.removeValue(forKey: pid)
-            exceedCounts[pid] = 0
-
-            if let process = monitor.processes.first(where: { $0.pid == pid }) {
-                process.isThrottled = false
-                process.throttleTarget = nil
-            }
-        }
-    }
-
-    private func matchingThreshold(for process: ProcessInfo) -> Double {
-        for rule in settings.rules where rule.enabled {
-            if rule.identity.matches(bundleID: process.bundleIdentifier, path: process.path) {
-                return rule.cpuThreshold
-            }
-        }
-        return settings.globalCPUThreshold
+        releaseSession(pid: pid)
     }
 }

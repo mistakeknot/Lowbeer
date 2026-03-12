@@ -20,7 +20,6 @@ final class ProcessMonitor {
     private var previousSamples: [pid_t: ProcessSnapshot] = [:]
     private var processCache: [pid_t: ProcessInfo] = [:]
     private let processorCount = Double(ProcessInfo_Helpers.activeProcessorCount)
-    private let queue = DispatchQueue(label: "com.lowbeer.monitor", qos: .utility)
 
     var pollInterval: TimeInterval {
         didSet {

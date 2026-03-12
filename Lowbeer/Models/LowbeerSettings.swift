@@ -87,18 +87,22 @@ final class LowbeerSettings {
         }
 
         // Seed vibecoding defaults on first launch only
+        var needsSave = false
         if !defaults.bool(forKey: "hasSeededDefaults") {
             if rules.isEmpty {
                 rules = DefaultRules.all
             }
             defaults.set(true, forKey: "hasSeededDefaults")
+            needsSave = true
         }
 
         // Ensure custom rules precede defaults for first-match semantics
         rules.sort { !$0.isDefault && $1.isDefault }
 
-        // didSet observers are suppressed during init, so write explicitly
-        saveRules()
+        // didSet observers are suppressed during init, so write explicitly if changed
+        if needsSave {
+            saveRules()
+        }
     }
 
     private func save() {

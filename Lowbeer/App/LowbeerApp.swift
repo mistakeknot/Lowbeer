@@ -28,7 +28,7 @@ struct LowbeerApp: App {
             if monitor.powerSampler.isIOReportAvailable {
                 Image(systemName: "bolt.fill")
                     .foregroundStyle(powerColor)
-                if monitor.latestPower.totalWatts >= 3.0 {
+                if monitor.latestPower.totalWatts >= PowerSample.displayThreshold {
                     Text(String(format: "%.1fW", monitor.latestPower.totalWatts))
                         .font(.system(.caption2, design: .monospaced))
                 }
