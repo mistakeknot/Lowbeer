@@ -27,6 +27,7 @@
 		5558DEEB07267E3EA8444F6A /* LowbeerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CBF76B0C2BBF0A7B7D9836 /* LowbeerSettings.swift */; };
 		57CE5BFFE11BA988BE1BF4A3 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7629CD72F664E6CF5AB2D74 /* SettingsWindowController.swift */; };
 		58F314D122248D3A78B77A0C /* SafetyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4B65D91AEDBBDACF6307E1 /* SafetyList.swift */; };
+		69F6C2F9F6CA59308B957BAB /* PowerSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A832902DA2E8FA442A09FE /* PowerSampler.swift */; };
 		6E084862AE8DB9DEAC9A6D37 /* AllowlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100264B8FB7ACECE91C1AB0 /* AllowlistView.swift */; };
 		6FEE7A1EEA85C0FA22A1B964 /* DefaultRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E5C4469733769264ED811A /* DefaultRulesTests.swift */; };
 		703630C9091D60F786049318 /* LowbeerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14D8B302BF89F919DF4C2EB /* LowbeerApp.swift */; };
@@ -36,6 +37,7 @@
 		A0040C51AC06798AED584C0B /* MockForegroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDADF360CF1593ED807839A2 /* MockForegroundObserver.swift */; };
 		A67846EB263E674902FB4A37 /* ThrottleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061379B42B6A09A205236BEA /* ThrottleEngine.swift */; };
 		A778B524FE75E3E9216CCA2C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2304EA43FAE85D8DA3DB53 /* Cocoa.framework */; };
+		A7A33D6CBC4E4D3D4E5706C0 /* PowerSamplerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0953DFE1C03DFE5D4A5F7FF1 /* PowerSamplerTests.swift */; };
 		B12B87338B2C994480C5657B /* RulesSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C2418669E9BC48F41A822 /* RulesSettingsView.swift */; };
 		B7432A97A9B83E4B5EBAC26E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66193AA2D57A678F38F68D07 /* AppDelegate.swift */; };
 		BD68344D32192BC840EF27E2 /* RuleEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F7668C9AFAABC41CDE24D4 /* RuleEvaluator.swift */; };
@@ -59,6 +61,7 @@
 
 /* Begin PBXFileReference section */
 		061379B42B6A09A205236BEA /* ThrottleEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThrottleEngine.swift; sourceTree = "<group>"; };
+		0953DFE1C03DFE5D4A5F7FF1 /* PowerSamplerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PowerSamplerTests.swift; sourceTree = "<group>"; };
 		0E49B50D886C8078E2C8713A /* ThrottleEngineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThrottleEngineTests.swift; sourceTree = "<group>"; };
 		141837C5396434BC199F43FD /* NotificationManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		16786E1C37D3FDCA0AA37AED /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -91,6 +94,7 @@
 		CE529D86AA4ECEBA59495E67 /* HelpWindowController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HelpWindowController.swift; sourceTree = "<group>"; };
 		D100264B8FB7ACECE91C1AB0 /* AllowlistView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AllowlistView.swift; sourceTree = "<group>"; };
 		D14D8B302BF89F919DF4C2EB /* LowbeerApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LowbeerApp.swift; sourceTree = "<group>"; };
+		D9A832902DA2E8FA442A09FE /* PowerSampler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PowerSampler.swift; sourceTree = "<group>"; };
 		DDDEF6162665DE22588DD5C3 /* ThrottleRuleCodableTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThrottleRuleCodableTests.swift; sourceTree = "<group>"; };
 		E19A42A00CE188B2FE74E8AD /* ProcessSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessSnapshot.swift; sourceTree = "<group>"; };
 		EDADF360CF1593ED807839A2 /* MockForegroundObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockForegroundObserver.swift; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 				AF24A1D60C2F342903F1F2F0 /* SafetyListTests.swift */,
 				8D124AB3FCF340C6699B40E4 /* RuleEvaluatorTests.swift */,
 				0E49B50D886C8078E2C8713A /* ThrottleEngineTests.swift */,
+				0953DFE1C03DFE5D4A5F7FF1 /* PowerSamplerTests.swift */,
 			);
 			name = Core;
 			path = Core;
@@ -214,6 +219,7 @@
 				B8F7668C9AFAABC41CDE24D4 /* RuleEvaluator.swift */,
 				AFA6603B85F7E45983EE5C52 /* ScheduleEvaluator.swift */,
 				141837C5396434BC199F43FD /* NotificationManager.swift */,
+				D9A832902DA2E8FA442A09FE /* PowerSampler.swift */,
 			);
 			name = Core;
 			path = Core;
@@ -413,6 +419,7 @@
 				E6E73E81526646E832B161DA /* HelpWindowController.swift in Sources */,
 				57CE5BFFE11BA988BE1BF4A3 /* SettingsWindowController.swift in Sources */,
 				19D40AEAA506D396662D5DA1 /* DefaultRules.swift in Sources */,
+				69F6C2F9F6CA59308B957BAB /* PowerSampler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +436,7 @@
 				272538E1AEE6303776273F5A /* ThrottleEngineTests.swift in Sources */,
 				A0040C51AC06798AED584C0B /* MockForegroundObserver.swift in Sources */,
 				6FEE7A1EEA85C0FA22A1B964 /* DefaultRulesTests.swift in Sources */,
+				A7A33D6CBC4E4D3D4E5706C0 /* PowerSamplerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
