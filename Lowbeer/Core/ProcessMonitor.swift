@@ -7,6 +7,8 @@ import Foundation
 final class ProcessMonitor {
     private(set) var processes: [ProcessInfo] = []
     private(set) var totalCPU: Double = 0
+    private(set) var latestPower: PowerSample = .zero
+    let powerSampler = PowerSampler()
 
     /// For testing: inject processes directly. Accessible via @testable import.
     func setProcessesForTesting(_ processes: [ProcessInfo]) {
@@ -111,9 +113,12 @@ final class ProcessMonitor {
         updated.sort { $0.cpuPercent > $1.cpuPercent }
         if updated.count > 50 { updated = Array(updated.prefix(50)) }
 
+        let power = powerSampler.sample()
+
         DispatchQueue.main.async { [weak self] in
             self?.processes = updated
             self?.totalCPU = total
+            self?.latestPower = power
         }
     }
 }
