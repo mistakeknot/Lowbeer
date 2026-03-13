@@ -10,6 +10,7 @@ final class ProcessMonitor {
     private(set) var latestPower: PowerSample = .zero
     let powerSampler = PowerSampler()
     let energyLedger = EnergyLedger()
+    let drainDetector = DrainDetector()
 
     /// For testing: inject processes directly. Accessible via @testable import.
     func setProcessesForTesting(_ processes: [ProcessInfo]) {
@@ -160,6 +161,14 @@ final class ProcessMonitor {
                     process.currentWatts = nil
                 }
             }
+
+            // Drain detection — always runs (baseline needs continuous feeding).
+            // Uses clamped systemWatts to prevent false wake-from-sleep alerts.
+            self.drainDetector.evaluate(
+                systemWatts: systemWatts,
+                topProcess: displayProcesses.first,
+                notificationsEnabled: LowbeerSettings.shared.notificationsEnabled
+            )
         }
     }
 }

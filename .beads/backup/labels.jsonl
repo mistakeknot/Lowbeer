@@ -1,6 +1,11 @@
+{"issue_id":"Lowbeer-1yd","label":"claimed_at:1773363684"}
+{"issue_id":"Lowbeer-1yd","label":"claimed_by:59eef2d3-0d33-4e8f-9268-adcb97390248"}
+{"issue_id":"Lowbeer-1yd","label":"complexity:3"}
 {"issue_id":"Lowbeer-eck","label":"claimed_at:1773361470"}
 {"issue_id":"Lowbeer-eck","label":"claimed_by:59eef2d3-0d33-4e8f-9268-adcb97390248"}
 {"issue_id":"Lowbeer-eck","label":"complexity:3"}
+{"issue_id":"Lowbeer-edr","label":"claimed_at:0"}
+{"issue_id":"Lowbeer-edr","label":"claimed_by:released"}
 {"issue_id":"Lowbeer-edr","label":"ic_run_id:ul9syr0i"}
 {"issue_id":"Lowbeer-edr","label":"sprint:true"}
 {"issue_id":"Lowbeer-edr","label":"token_budget:250000"}

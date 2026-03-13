@@ -9,6 +9,7 @@ final class LowbeerNotificationManager: NSObject, UNUserNotificationCenterDelega
     var onThrottleApproved: ((pid_t) -> Void)?
 
     private static let askCategoryID = "ASK_THROTTLE"
+    private static let drainCategoryID = "DRAIN_ALERT"
     private static let throttleActionID = "THROTTLE_ACTION"
     private static let ignoreActionID = "IGNORE_ACTION"
 
@@ -41,7 +42,13 @@ final class LowbeerNotificationManager: NSObject, UNUserNotificationCenterDelega
             actions: [throttleAction, ignoreAction],
             intentIdentifiers: []
         )
-        center.setNotificationCategories([askCategory])
+        let drainCategory = UNNotificationCategory(
+            identifier: Self.drainCategoryID,
+            actions: [throttleAction, ignoreAction],
+            intentIdentifiers: []
+        )
+        // Must register ALL categories in one call — setNotificationCategories replaces the set
+        center.setNotificationCategories([askCategory, drainCategory])
     }
 
     func notifyThrottled(processName: String, pid: pid_t, action: ThrottleAction) {
@@ -86,6 +93,32 @@ final class LowbeerNotificationManager: NSObject, UNUserNotificationCenterDelega
         UNUserNotificationCenter.current().add(request)
     }
 
+    /// Fire a notification for sustained high battery drain.
+    func notifyDrain(
+        systemWatts: Double,
+        multiplier: Double,
+        culpritName: String,
+        culpritCPU: Double,
+        culpritPID: pid_t
+    ) {
+        let content = UNMutableNotificationContent()
+        content.title = "Lowbeer — High Battery Drain"
+        content.body = String(
+            format: "Your Mac is using %.0fW (%.0fx normal). Top culprit: %@ at %d%% CPU.",
+            systemWatts, multiplier, culpritName, Int(culpritCPU)
+        )
+        content.sound = .default
+        content.categoryIdentifier = Self.drainCategoryID
+        content.userInfo = ["pid": Int(culpritPID)]
+
+        let request = UNNotificationRequest(
+            identifier: "drain-alert",
+            content: content,
+            trigger: nil
+        )
+        UNUserNotificationCenter.current().add(request)
+    }
+
     // Show notifications even when app is frontmost
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
@@ -94,13 +127,16 @@ final class LowbeerNotificationManager: NSObject, UNUserNotificationCenterDelega
         [.banner, .sound]
     }
 
-    // Handle notification action responses
+    // Handle notification action responses (category-aware dispatch)
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse
     ) async {
         guard response.actionIdentifier == Self.throttleActionID else { return }
-        guard let pid = response.notification.request.content.userInfo["pid"] as? Int else { return }
+        let category = response.notification.request.content.categoryIdentifier
+        guard category == Self.askCategoryID || category == Self.drainCategoryID else { return }
+        guard let pid = response.notification.request.content.userInfo["pid"] as? Int,
+              pid > 0 else { return }
         await MainActor.run {
             onThrottleApproved?(pid_t(pid))
         }
