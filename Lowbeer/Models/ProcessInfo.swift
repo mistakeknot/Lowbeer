@@ -13,6 +13,7 @@ final class ProcessInfo: Identifiable {
     var history: ProcessHistory = ProcessHistory()
     var isThrottled: Bool = false
     var throttleTarget: Double? = nil  // nil = full stop, 0.25 = 25% CPU
+    var currentWatts: Double? = nil    // Per-process watts estimate from last poll
 
     var id: pid_t { pid }
 

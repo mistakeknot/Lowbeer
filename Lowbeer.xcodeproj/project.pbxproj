@@ -28,6 +28,7 @@
 		57CE5BFFE11BA988BE1BF4A3 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7629CD72F664E6CF5AB2D74 /* SettingsWindowController.swift */; };
 		58F314D122248D3A78B77A0C /* SafetyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4B65D91AEDBBDACF6307E1 /* SafetyList.swift */; };
 		69F6C2F9F6CA59308B957BAB /* PowerSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A832902DA2E8FA442A09FE /* PowerSampler.swift */; };
+		E3A1B2C4D5E6F70891234567 /* EnergyLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F607890ABCDEF1 /* EnergyLedger.swift */; };
 		6E084862AE8DB9DEAC9A6D37 /* AllowlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100264B8FB7ACECE91C1AB0 /* AllowlistView.swift */; };
 		6FEE7A1EEA85C0FA22A1B964 /* DefaultRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E5C4469733769264ED811A /* DefaultRulesTests.swift */; };
 		703630C9091D60F786049318 /* LowbeerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14D8B302BF89F919DF4C2EB /* LowbeerApp.swift */; };
@@ -96,6 +97,7 @@
 		D14D8B302BF89F919DF4C2EB /* LowbeerApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LowbeerApp.swift; sourceTree = "<group>"; };
 		D9A832902DA2E8FA442A09FE /* PowerSampler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PowerSampler.swift; sourceTree = "<group>"; };
 		DDDEF6162665DE22588DD5C3 /* ThrottleRuleCodableTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThrottleRuleCodableTests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F607890ABCDEF1 /* EnergyLedger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EnergyLedger.swift; sourceTree = "<group>"; };
 		E19A42A00CE188B2FE74E8AD /* ProcessSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessSnapshot.swift; sourceTree = "<group>"; };
 		EDADF360CF1593ED807839A2 /* MockForegroundObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockForegroundObserver.swift; sourceTree = "<group>"; };
 		F0774396123D88B08535CF19 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 			children = (
 				4C4343FC1EDB42C55A6249FF /* ProcessMonitor.swift */,
 				E19A42A00CE188B2FE74E8AD /* ProcessSnapshot.swift */,
+				A1B2C3D4E5F607890ABCDEF1 /* EnergyLedger.swift */,
 				061379B42B6A09A205236BEA /* ThrottleEngine.swift */,
 				B70421AA6AF76BD8161E65AF /* ThrottleSession.swift */,
 				BBACE791B71E0AAF48912E5E /* ForegroundObserver.swift */,
@@ -420,6 +423,7 @@
 				57CE5BFFE11BA988BE1BF4A3 /* SettingsWindowController.swift in Sources */,
 				19D40AEAA506D396662D5DA1 /* DefaultRules.swift in Sources */,
 				69F6C2F9F6CA59308B957BAB /* PowerSampler.swift in Sources */,
+				E3A1B2C4D5E6F70891234567 /* EnergyLedger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

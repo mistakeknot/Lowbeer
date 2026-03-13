@@ -9,6 +9,7 @@ final class ProcessMonitor {
     private(set) var totalCPU: Double = 0
     private(set) var latestPower: PowerSample = .zero
     let powerSampler = PowerSampler()
+    let energyLedger = EnergyLedger()
 
     /// For testing: inject processes directly. Accessible via @testable import.
     func setProcessesForTesting(_ processes: [ProcessInfo]) {
@@ -108,16 +109,57 @@ final class ProcessMonitor {
         let activePIDs = Set(currentSamples.keys)
         processCache = processCache.filter { activePIDs.contains($0.key) }
 
-        // Sort by CPU descending, keep top 50
+        // Sort by CPU descending
         updated.sort { $0.cpuPercent > $1.cpuPercent }
-        if updated.count > 50 { updated = Array(updated.prefix(50)) }
 
         let power = powerSampler.sample()
 
+        // Compute actual elapsed time from sample timestamps (not pollInterval)
+        // to handle timer coalescing, load delays, and interval changes correctly.
+        let elapsed: TimeInterval = {
+            if let anyPrev = prev.values.first,
+               let anyCurr = currentSamples[anyPrev.pid] ?? currentSamples.values.first {
+                let dt = anyCurr.timestamp - anyPrev.timestamp
+                return dt > 0 ? dt : pollInterval
+            }
+            return pollInterval
+        }()
+
+        // Energy accumulation: run on ALL processes before truncating to top 50.
+        // This ensures processes ranked 51+ still get their energy attributed.
+        let systemWatts = min(power.totalWatts, EnergyLedger.maxPlausibleWatts)
+        let allProcesses = updated  // Keep reference to full list for energy
+        let displayProcesses = updated.count > 50 ? Array(updated.prefix(50)) : updated
+
         DispatchQueue.main.async { [weak self] in
-            self?.processes = updated
-            self?.totalCPU = total
-            self?.latestPower = power
+            guard let self else { return }
+            self.processes = displayProcesses
+            self.totalCPU = total
+            self.latestPower = power
+
+            // Accumulate per-process energy on main thread (EnergyLedger is @MainActor)
+            if systemWatts >= 1.0, total >= 1.0 {
+                for process in allProcesses {
+                    let share = process.cpuPercent / total
+                    let processWatts = share * systemWatts
+                    let whIncrement = processWatts * (elapsed / 3600.0)
+                    process.currentWatts = processWatts
+
+                    self.energyLedger.record(
+                        identity: process.bundleIdentifier ?? process.path,
+                        displayName: process.name,
+                        watts: processWatts,
+                        whIncrement: whIncrement,
+                        icon: process.icon
+                    )
+                }
+                self.energyLedger.evictStale()
+            } else {
+                // Below threshold — clear instantaneous watts to avoid stale values
+                for process in allProcesses {
+                    process.currentWatts = nil
+                }
+            }
         }
     }
 }
