@@ -41,7 +41,7 @@ struct PopoverView: View {
                 throttledSection
             }
         }
-        .frame(width: 360)
+        .frame(width: 400)
     }
 
     private var headerView: some View {

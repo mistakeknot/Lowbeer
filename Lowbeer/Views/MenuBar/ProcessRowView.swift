@@ -13,6 +13,20 @@ struct ProcessRowView: View {
         return .blue
     }
 
+    private func formatMemory(_ bytes: UInt64) -> String {
+        let gb = Double(bytes) / (1024 * 1024 * 1024)
+        if gb >= 1.0 { return String(format: "%.1fG", gb) }
+        let mb = Double(bytes) / (1024 * 1024)
+        return String(format: "%.0fM", mb)
+    }
+
+    private func memoryColor(_ bytes: UInt64) -> Color {
+        let gb = Double(bytes) / (1024 * 1024 * 1024)
+        if gb >= 10 { return .red }
+        if gb >= 2 { return .orange }
+        return .secondary
+    }
+
     var body: some View {
         HStack(spacing: 8) {
             // App icon
@@ -45,6 +59,12 @@ struct ProcessRowView: View {
                     .foregroundStyle(.secondary)
                     .frame(width: 40, alignment: .trailing)
             }
+
+            // Memory (compact: 142M or 1.2G)
+            Text(formatMemory(process.residentBytes))
+                .font(.system(.caption2, design: .monospaced))
+                .foregroundStyle(memoryColor(process.residentBytes))
+                .frame(width: 38, alignment: .trailing)
 
             // Sparkline
             SparklineView(
