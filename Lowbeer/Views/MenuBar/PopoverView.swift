@@ -1,18 +1,46 @@
 import SwiftUI
 
+enum SortColumn: String {
+    case cpu, ram, energy
+}
+
 struct PopoverView: View {
     let monitor: ProcessMonitor
     let engine: ThrottleEngine
     let settings: LowbeerSettings
 
+    @State private var sortColumn: SortColumn = .cpu
+    @State private var sortAscending: Bool = false
+
+    private var showEnergy: Bool {
+        monitor.latestPower.totalWatts >= PowerSample.displayThreshold && monitor.totalCPU > 0
+    }
+
     private var displayedProcesses: [ProcessInfo] {
-        Array(monitor.processes.prefix(15))
+        let all = Array(monitor.processes.prefix(15))
+        switch sortColumn {
+        case .cpu:
+            return sortAscending ? all.sorted { $0.cpuPercent < $1.cpuPercent }
+                                 : all  // Already sorted by CPU desc from ProcessMonitor
+        case .ram:
+            return sortAscending ? all.sorted { $0.residentBytes < $1.residentBytes }
+                                 : all.sorted { $0.residentBytes > $1.residentBytes }
+        case .energy:
+            let total = monitor.totalCPU
+            guard total > 0 else { return all }
+            return sortAscending ? all.sorted { $0.cpuPercent / total < $1.cpuPercent / total }
+                                 : all.sorted { $0.cpuPercent / total > $1.cpuPercent / total }
+        }
     }
 
     var body: some View {
         VStack(spacing: 0) {
-            // Header
+            // Header bar
             headerView
+            Divider()
+
+            // Column headers
+            columnHeaders
             Divider()
 
             // Process list
@@ -23,6 +51,7 @@ struct PopoverView: View {
                             process: process,
                             systemWatts: monitor.latestPower.totalWatts,
                             totalCPU: monitor.totalCPU,
+                            showEnergy: showEnergy,
                             onThrottle: { engine.throttle(pid: process.pid) },
                             onResume: { engine.resume(pid: process.pid) }
                         )
@@ -41,7 +70,62 @@ struct PopoverView: View {
                 throttledSection
             }
         }
-        .frame(width: 400)
+        .frame(width: 420)
+    }
+
+    private var columnHeaders: some View {
+        HStack(spacing: 8) {
+            // Icon spacer
+            Spacer().frame(width: 18)
+
+            // Name (not sortable — just a label)
+            Text("Process")
+                .font(.system(.caption2, design: .default).weight(.medium))
+                .foregroundStyle(.tertiary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            // CPU header
+            sortableHeader("CPU", column: .cpu, width: 50)
+
+            // Energy header
+            if showEnergy {
+                sortableHeader("Energy", column: .energy, width: 46)
+            }
+
+            // RAM header
+            sortableHeader("RAM", column: .ram, width: 38)
+
+            // Sparkline spacer
+            Spacer().frame(width: 36)
+
+            // Action button spacer
+            Spacer().frame(width: 20)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 4)
+    }
+
+    private func sortableHeader(_ label: String, column: SortColumn, width: CGFloat) -> some View {
+        Button {
+            if sortColumn == column {
+                sortAscending.toggle()
+            } else {
+                sortColumn = column
+                sortAscending = false  // Default to descending (highest first)
+            }
+        } label: {
+            HStack(spacing: 2) {
+                Text(label)
+                if sortColumn == column {
+                    Image(systemName: sortAscending ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 7, weight: .bold))
+                }
+            }
+            .font(.system(.caption2, design: .default).weight(.medium))
+            .foregroundStyle(sortColumn == column ? .primary : .tertiary)
+        }
+        .buttonStyle(.borderless)
+        .frame(width: width, alignment: .trailing)
     }
 
     private var headerView: some View {

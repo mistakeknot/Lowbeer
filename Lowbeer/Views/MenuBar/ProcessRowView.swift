@@ -4,6 +4,7 @@ struct ProcessRowView: View {
     let process: ProcessInfo
     let systemWatts: Double
     let totalCPU: Double
+    let showEnergy: Bool
     let onThrottle: () -> Void
     let onResume: () -> Void
 
@@ -52,12 +53,12 @@ struct ProcessRowView: View {
                 .frame(width: 50, alignment: .trailing)
 
             // Energy share (% of system power)
-            if systemWatts >= PowerSample.displayThreshold, totalCPU > 0 {
-                let share = (process.cpuPercent / totalCPU) * 100.0
-                Text(String(format: "%.0f%%⚡", share))
+            if showEnergy {
+                let share = totalCPU > 0 ? (process.cpuPercent / totalCPU) * 100.0 : 0
+                Text(String(format: "%.0f%%", share))
                     .font(.system(.caption2, design: .monospaced))
                     .foregroundStyle(.secondary)
-                    .frame(width: 40, alignment: .trailing)
+                    .frame(width: 46, alignment: .trailing)
             }
 
             // Memory (compact: 142M or 1.2G)
