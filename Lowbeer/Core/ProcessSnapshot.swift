@@ -17,6 +17,7 @@ struct ProcessSnapshot: Sendable {
     let path: String
     let totalUserNs: UInt64
     let totalSystemNs: UInt64
+    let residentBytes: UInt64
     let timestamp: CFAbsoluteTime
     let startTime: timeval
 
@@ -83,6 +84,7 @@ enum ProcessSampler {
                 path: path,
                 totalUserNs: taskInfo.pti_total_user,
                 totalSystemNs: taskInfo.pti_total_system,
+                residentBytes: taskInfo.pti_resident_size,
                 timestamp: now,
                 startTime: startTime
             )

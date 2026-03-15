@@ -30,6 +30,7 @@
 		69F6C2F9F6CA59308B957BAB /* PowerSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A832902DA2E8FA442A09FE /* PowerSampler.swift */; };
 		E3A1B2C4D5E6F70891234567 /* EnergyLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F607890ABCDEF1 /* EnergyLedger.swift */; };
 		F4A2B3C5D6E7F80912345678 /* DrainDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A708190BCDEF12 /* DrainDetector.swift */; };
+		A5B6C7D8E9F0A1B2C3D4E5F6 /* MemoryLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6A7B8C9D0E1F2A3B4C5 /* MemoryLedger.swift */; };
 		D5E6F7A8B9C0D1E2F3A4B5C6 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6D7E8F9A0B1C2D3E4F5A6B7 /* IOKit.framework */; };
 		6E084862AE8DB9DEAC9A6D37 /* AllowlistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D100264B8FB7ACECE91C1AB0 /* AllowlistView.swift */; };
 		6FEE7A1EEA85C0FA22A1B964 /* DefaultRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E5C4469733769264ED811A /* DefaultRulesTests.swift */; };
@@ -101,6 +102,7 @@
 		DDDEF6162665DE22588DD5C3 /* ThrottleRuleCodableTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ThrottleRuleCodableTests.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F607890ABCDEF1 /* EnergyLedger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EnergyLedger.swift; sourceTree = "<group>"; };
 		B2C3D4E5F6A708190BCDEF12 /* DrainDetector.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DrainDetector.swift; sourceTree = "<group>"; };
+		D4E5F6A7B8C9D0E1F2A3B4C5 /* MemoryLedger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MemoryLedger.swift; sourceTree = "<group>"; };
 		C6D7E8F9A0B1C2D3E4F5A6B7 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
 		E19A42A00CE188B2FE74E8AD /* ProcessSnapshot.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProcessSnapshot.swift; sourceTree = "<group>"; };
 		EDADF360CF1593ED807839A2 /* MockForegroundObserver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MockForegroundObserver.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				E19A42A00CE188B2FE74E8AD /* ProcessSnapshot.swift */,
 				A1B2C3D4E5F607890ABCDEF1 /* EnergyLedger.swift */,
 				B2C3D4E5F6A708190BCDEF12 /* DrainDetector.swift */,
+				D4E5F6A7B8C9D0E1F2A3B4C5 /* MemoryLedger.swift */,
 				061379B42B6A09A205236BEA /* ThrottleEngine.swift */,
 				B70421AA6AF76BD8161E65AF /* ThrottleSession.swift */,
 				BBACE791B71E0AAF48912E5E /* ForegroundObserver.swift */,
@@ -432,6 +435,7 @@
 				69F6C2F9F6CA59308B957BAB /* PowerSampler.swift in Sources */,
 				E3A1B2C4D5E6F70891234567 /* EnergyLedger.swift in Sources */,
 				F4A2B3C5D6E7F80912345678 /* DrainDetector.swift in Sources */,
+				A5B6C7D8E9F0A1B2C3D4E5F6 /* MemoryLedger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

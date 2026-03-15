@@ -10,6 +10,7 @@ final class ProcessMonitor {
     private(set) var latestPower: PowerSample = .zero
     let powerSampler = PowerSampler()
     let energyLedger = EnergyLedger()
+    let memoryLedger = MemoryLedger()
     let drainDetector = DrainDetector()
 
     /// For testing: inject processes directly. Accessible via @testable import.
@@ -101,6 +102,7 @@ final class ProcessMonitor {
             }
 
             info.cpuPercent = cpuPercent
+            info.residentBytes = current.residentBytes
             info.history.append(cpuPercent)
             total += cpuPercent
             updated.append(info)
@@ -161,6 +163,17 @@ final class ProcessMonitor {
                     process.currentWatts = nil
                 }
             }
+
+            // Memory tracking — record for all processes before truncation
+            for process in allProcesses {
+                self.memoryLedger.record(
+                    identity: process.bundleIdentifier ?? process.path,
+                    displayName: process.name,
+                    residentBytes: process.residentBytes,
+                    icon: process.icon
+                )
+            }
+            self.memoryLedger.evictStale()
 
             // Drain detection — always runs (baseline needs continuous feeding).
             // Uses clamped systemWatts to prevent false wake-from-sleep alerts.

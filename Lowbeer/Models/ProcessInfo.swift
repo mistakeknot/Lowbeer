@@ -14,6 +14,7 @@ final class ProcessInfo: Identifiable {
     var isThrottled: Bool = false
     var throttleTarget: Double? = nil  // nil = full stop, 0.25 = 25% CPU
     var currentWatts: Double? = nil    // Per-process watts estimate from last poll
+    var residentBytes: UInt64 = 0      // Resident memory from proc_taskinfo
 
     var id: pid_t { pid }
 
